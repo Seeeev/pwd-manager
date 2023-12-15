@@ -422,11 +422,11 @@ export default function ApplicationForm() {
           </div>
         </CardContainer>
 
-        <CardContainer description={"Family Background"}>
+        <CardContainer description="Family Background">
           <div className="flex gap-2">
             <div className="w-28">
               <p className="text-sm text-muted-foreground pt-10">
-                Father&apos;s Name&colon;
+                Fathers Name
               </p>
             </div>
             <CustomFormField
@@ -446,9 +446,7 @@ export default function ApplicationForm() {
             />
           </div>
           <div className="flex gap-2">
-            <p className="text-sm text-muted-foreground pt-10">
-              Mothers&apos;s Name&colon;
-            </p>
+            <p className="text-sm text-muted-foreground pt-10">Mothers Name</p>
             <CustomFormField
               control={form.control}
               name="mothersLastName"
