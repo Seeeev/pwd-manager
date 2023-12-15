@@ -470,7 +470,9 @@ export default function ApplicationForm() {
         <div className="flex gap-2">
           <div className="flex flex-auto w-64">
             <p className="text-sm text-muted-foreground pt-5 w-[200px]">
-              Accomplished by:<span className="text-red-500">*</span>
+              <span className="text-sm text-muted-foreground pt-5 w-[200px]">
+                Accomplished by:<span className="text-red-500">*</span>
+              </span>
             </p>
             <div className="w-full">
               <CustomFormField control={form.control} name="accomplishedBy" />
