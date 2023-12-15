@@ -426,7 +426,7 @@ export default function ApplicationForm() {
           <div className="flex gap-2">
             <div className="w-28">
               <p className="text-sm text-muted-foreground pt-10">
-                Father's Name:
+                Father&apos;s Name&colon;
               </p>
             </div>
             <CustomFormField
@@ -447,7 +447,7 @@ export default function ApplicationForm() {
           </div>
           <div className="flex gap-2">
             <p className="text-sm text-muted-foreground pt-10">
-              Mothers's Name:
+              Mothers&apos;s Name&colon;
             </p>
             <CustomFormField
               control={form.control}
@@ -471,7 +471,7 @@ export default function ApplicationForm() {
           <div className="flex flex-auto w-64">
             <p className="text-sm text-muted-foreground pt-5 w-[200px]">
               <span className="text-sm text-muted-foreground pt-5 w-[200px]">
-                Accomplished by:<span className="text-red-500">*</span>
+                Accomplished by:<span className="text-red-500">&#42;</span>
               </span>
             </p>
             <div className="w-full">
