@@ -471,7 +471,8 @@ export default function ApplicationForm() {
           <div className="flex flex-auto w-64">
             <p className="text-sm text-muted-foreground pt-5 w-[200px]">
               <span className="text-sm text-muted-foreground pt-5 w-[200px]">
-                Accomplished by:<span className="text-red-500">&#42;</span>
+                Accomplished by&colon;
+                <span className="text-red-500">&#42;</span>
               </span>
             </p>
             <div className="w-full">
