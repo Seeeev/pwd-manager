@@ -4,10 +4,6 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarNav } from "./sidebar-nav";
 import { ReactNode } from "react";
 
-export interface SettingsLayoutProps {
-  children: ReactNode;
-}
-
 export const metadata: Metadata = {
   title: "Forms",
   description: "Advanced form example using react-hook-form and Zod.",
@@ -36,7 +32,7 @@ const sidebarNavItems = [
   },
 ];
 
-export default function Admin({ children }: SettingsLayoutProps) {
+export default function Admin({ children }: SettingsLayoutPropss) {
   return (
     <>
       <div className="md:hidden">
@@ -70,4 +66,7 @@ export default function Admin({ children }: SettingsLayoutProps) {
       </div>
     </>
   );
+}
+interface SettingsLayoutPropss {
+  children: ReactNode;
 }
