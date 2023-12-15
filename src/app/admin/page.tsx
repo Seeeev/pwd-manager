@@ -1,12 +1,12 @@
-
-
-// import { buttonVariants } from "@/registry/new-york/ui/button";
-
 import { Metadata } from "next";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { SidebarNav } from "./sidebar-nav";
 
+
+export interface SettingsLayoutProps {
+  children: React.ReactNode;
+}
 
 
 export const metadata: Metadata = {
@@ -37,9 +37,6 @@ const sidebarNavItems = [
   },
 ];
 
-interface SettingsLayoutProps {
-  children: React.ReactNode;
-}
 
 export default function Admin({ children }: SettingsLayoutProps) {
   return (
