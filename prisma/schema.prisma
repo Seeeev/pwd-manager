@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Pwd {
+  pwdNumber                   String            @id
+  firstName                   String
+  middleName                  String?
+  lastName                    String?
+  suffix                      String?
+  streetName                  String?
+  barangay                    String
+  municipality                String
+  province                    String
+  region                      String
+  landline                    String?
+  mobileNumber                String
+  emailAddress                String?
+  birthDate                   DateTime
+  gender                      String
+  civilStatus                 String
+  educationalAttainment       String?
+  employmentStatus            String?
+  affiliatedPerson            String?
+  affiliatedAddress           String?
+  affiliatedContactNumber     String?
+  sssNumber                   String?
+  gsisNumber                  String?
+  psnNumber                   String?
+  philhealthNumber            String?
+  isPhilhealthMember          Boolean?
+  isPhilhealthMemberDependent Boolean?
+  fathersFirstName            String?
+  fathersMiddleName           String?
+  fathersLastName             String?
+  mothersFirstName            String?
+  mothersMiddleName           String?
+  mothersLastName             String?
+  accomplishedBy              String
+  isApplicant                 Boolean?
+  isGuardian                  Boolean?
+  isRepresentative            Boolean?
+  createdAt                   DateTime          @default(now())
+  disability                  Disability[]
+  disabilityCause             DisabilityCause[]
+  bloodType                   String
+  occupation                  Occupation?
+}
+
+model Disability {
+  id           Int     @id @default(autoincrement())
+  name         String
+  pwdPwdNumber String?
+  Pwd          Pwd?    @relation(fields: [pwdPwdNumber], references: [pwdNumber])
+}
+
+model DisabilityCause {
+  id           Int     @id @default(autoincrement())
+  name         String
+  pwdPwdNumber String?
+  Pwd          Pwd?    @relation(fields: [pwdPwdNumber], references: [pwdNumber])
+}
+
+model Occupation {
+  id           Int     @id @default(autoincrement())
+  name         String
+  pwd          Pwd?    @relation(fields: [pwdPwdNumber], references: [pwdNumber])
+  pwdPwdNumber String? @unique
+}

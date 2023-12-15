@@ -1,0 +1,1 @@
+export const genders: {value: String, label: String}[] = [{ value: "Male", label: "Male" }, {value: "Female", label: "Female"}]

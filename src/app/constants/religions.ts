@@ -1,0 +1,15 @@
+export const religions: { value: String; label: string }[] = [
+  { value: "Roman Catholicism", label: "Roman Catholicism" },
+  { value: "Islam", label: "Islam" },
+  { value: "Iglesia ni Cristo (Church of Christ)", label: "Iglesia ni Cristo (Church of Christ)" },
+  { value:  "Aglipayans (Philippine Independent Church)", label: "Aglipayans (Philippine Independent Church)" },
+  { value: "Baptist Churches", label: "Baptist Churches" },
+  { value: "Methodist Churches", label: "Methodist Churches" },
+  { value: "Lutheran Churches", label: "Lutheran Churches" },
+  { value: "Seventh-day Adventist Church", label: "Seventh-day Adventist Church" },
+  { value:  "Evangelical Methodist Church in the Philippine Islands", label: "Evangelical Methodist Church in the Philippine Islands" },
+  { value: "Jehovah's Witnesses", label: "Jehovah's Witnesses" },
+  { value: "Buddhism", label: "Buddhism" },
+  { value: "Hinduism", label: "Hinduism" },
+  { value: "Indigenous Belief Systems", label: "Indigenous Belief Systems" },
+];
