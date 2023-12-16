@@ -116,6 +116,7 @@ export default function ApplicationForm() {
 
   if (occupation.data) {
     optionsOccupation = occupation.data;
+    console.log(occupation.data);
   }
 
   const mutation = useMutation({
