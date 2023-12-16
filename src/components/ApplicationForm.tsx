@@ -88,6 +88,7 @@ export default function ApplicationForm() {
   let optionsDisability: OptionType[] = [];
 
   if (disability.data) {
+    console.log(`disability:`, disability.data);
     optionsDisability = disability.data.map(
       ({ pwdPwdNumber, ...rest }) => rest
     );
@@ -101,6 +102,7 @@ export default function ApplicationForm() {
   let optionsDisabilityCause: OptionType[] = [];
 
   if (disabilityCause.data) {
+    console.log(`disabilityCause:`, disabilityCause.data);
     optionsDisabilityCause = disabilityCause.data.map(
       ({ pwdPwdNumber, ...rest }) => rest
     );
