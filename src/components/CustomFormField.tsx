@@ -32,7 +32,7 @@ export default function CustomFormField<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className={`${className}`}>
+        <FormItem>
           <FormLabel className="whitespace-nowrap">
             {label} {isRequired && <span className="text-red-500">*</span>}
           </FormLabel>

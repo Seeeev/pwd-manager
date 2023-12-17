@@ -7,6 +7,7 @@ import { Path, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
   FormLabel,
@@ -27,6 +28,8 @@ import { employmentStatus } from "@/app/constants/employmentStatus";
 import CustomCheckbox from "./CustomCheckbox2";
 import { ToastAction } from "./ui/toast";
 import { useState } from "react";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 export default function ApplicationForm() {
   const form = useForm<z.infer<typeof pwdSchema>>({
@@ -181,61 +184,78 @@ export default function ApplicationForm() {
         />
 
         <div className="flex gap-2">
-          <CustomFormField
-            control={form.control}
-            name="lastName"
-            label="Last Name"
-            isRequired={true}
-          />
-          <CustomFormField
-            control={form.control}
-            name="firstName"
-            label="First Name"
-            isRequired={true}
-          />
-          <CustomFormField
-            control={form.control}
-            name="middleName"
-            label="Middle Name"
-          />
-          <CustomFormField
-            control={form.control}
-            name="suffix"
-            label="Suffix"
-          />
+          <div className="flex-1">
+            <CustomFormField
+              control={form.control}
+              name="lastName"
+              label="Last Name"
+              isRequired={true}
+            />
+          </div>
+          <div className="flex-1">
+            <CustomFormField
+              control={form.control}
+              name="firstName"
+              label="First Name"
+              isRequired={true}
+            />
+          </div>
+          <div className="flex-1">
+            <CustomFormField
+              control={form.control}
+              name="middleName"
+              label="Middle Name"
+            />
+          </div>
+          <div className="flex-1">
+            <CustomFormField
+              control={form.control}
+              name="suffix"
+              label="Suffix"
+            />
+          </div>
         </div>
 
         <div className="flex gap-2">
-          <CustomFormField
-            control={form.control}
-            name="birthDate"
-            label="Birth Date"
-            isRequired={true}
-          />
-          <CustomSelectField
-            control={form.control}
-            data={gender}
-            name="gender"
-            label="Gender"
-            placeholder="Select your gender"
-            isRequired={true}
-          />
-          <CustomSelectField
-            control={form.control}
-            data={civilStatus}
-            name="civilStatus"
-            label="Civil Status"
-            placeholder="Select your civil status"
-            isRequired={true}
-          />
-          <CustomSelectField
-            control={form.control}
-            data={bloodTypes}
-            name="bloodType"
-            label="Blood type"
-            placeholder="Select your blood type"
-            isRequired={true}
-          />
+          <div className="flex-1">
+            <CustomFormField
+              control={form.control}
+              name="birthDate"
+              label="Birth Date"
+              isRequired={true}
+            />
+          </div>
+          <div className="flex-1">
+            <CustomSelectField
+              control={form.control}
+              data={gender}
+              name="gender"
+              label="Gender"
+              placeholder="Select your gender"
+              isRequired={true}
+            />
+          </div>
+
+          <div className="flex1">
+            <CustomSelectField
+              control={form.control}
+              data={civilStatus}
+              name="civilStatus"
+              label="Civil Status"
+              placeholder="Select your civil status"
+              isRequired={true}
+            />
+          </div>
+          <div className="flex-1">
+            <CustomSelectField
+              control={form.control}
+              data={bloodTypes}
+              name="bloodType"
+              label="Blood type"
+              placeholder="Select your blood type"
+              isRequired={true}
+            />
+          </div>
         </div>
 
         <FormField
@@ -276,133 +296,169 @@ export default function ApplicationForm() {
           )}
         />
         <CardContainer description="Address Details">
-          <div className="flex gap-2">
-            <CustomFormField
-              control={form.control}
-              name="streetName"
-              label="Street"
-            />
-            <CustomFormField
-              control={form.control}
-              name="barangay"
-              label="Barangay"
-              isRequired={true}
-            />
-            <CustomFormField
-              control={form.control}
-              name="municipality"
-              label="City/Municipality"
-              isRequired={true}
-            />
-            <CustomFormField
-              control={form.control}
-              name="province"
-              label="Province"
-              isRequired={true}
-            />
-            <CustomFormField
-              control={form.control}
-              name="region"
-              label="Region"
-              isRequired={true}
-            />
+          <div className="flex sm:flex-row flex-col gap-2">
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="streetName"
+                label="Street"
+              />
+            </div>
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="barangay"
+                label="Barangay"
+                isRequired={true}
+              />
+            </div>
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="municipality"
+                label="City/Municipality"
+                isRequired={true}
+              />
+            </div>
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="province"
+                label="Province"
+                isRequired={true}
+              />
+            </div>
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="region"
+                label="Region"
+                isRequired={true}
+              />
+            </div>
           </div>
         </CardContainer>
 
         <CardContainer description="Contact Details">
           <div className=" flex gap-2 ">
-            <CustomFormField
-              control={form.control}
-              name="landline"
-              label="Landline"
-              type="number"
-            />
-            <CustomFormField
-              control={form.control}
-              name="mobileNumber"
-              label="Mobile Number"
-              isRequired={true}
-              type="number"
-            />
-            <CustomFormField
-              control={form.control}
-              name="emailAddress"
-              label="Email Address"
-            />
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="landline"
+                label="Landline"
+                type="number"
+              />
+            </div>
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="mobileNumber"
+                label="Mobile Number"
+                isRequired={true}
+                type="number"
+              />
+            </div>
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="emailAddress"
+                label="Email Address"
+              />
+            </div>
           </div>
         </CardContainer>
 
         <CardContainer description="Career Factors">
           <div className="flex gap-2">
-            <CustomSelectField
-              control={form.control}
-              label={"Educational Attainment"}
-              name="educationalAttainment"
-              data={educationalAttainment}
-              placeholder={"Select if applicable"}
-            />
+            <div className="flex-1">
+              <CustomSelectField
+                control={form.control}
+                label={"Educational Attainment"}
+                name="educationalAttainment"
+                data={educationalAttainment}
+                placeholder={"Select if applicable"}
+              />
+            </div>
 
-            <CustomSelectField
-              control={form.control}
-              label={"Employement status"}
-              name="employmentStatus"
-              data={employmentStatus}
-              placeholder={"Select if applicable"}
-            />
+            <div className="flex-1">
+              <CustomSelectField
+                control={form.control}
+                label={"Employement status"}
+                name="employmentStatus"
+                data={employmentStatus}
+                placeholder={"Select if applicable"}
+              />
+            </div>
 
-            <CustomSelectField
-              control={form.control}
-              label={"Occupation"}
-              name="occupation"
-              data={optionsOccupation}
-              placeholder={"Select if applicable"}
-            />
+            <div className="flex-1">
+              <CustomSelectField
+                control={form.control}
+                label={"Occupation"}
+                name="occupation"
+                data={optionsOccupation}
+                placeholder={"Select if applicable"}
+              />
+            </div>
           </div>
         </CardContainer>
 
         <CardContainer description="Organization Affiliated">
           <div className=" flex gap-2 ">
-            <CustomFormField
-              control={form.control}
-              name="affiliatedPerson"
-              label="Contact Person"
-            />
-            <CustomFormField
-              control={form.control}
-              name="affiliatedAddress"
-              label="Office Address"
-            />
-            <CustomFormField
-              control={form.control}
-              name="affiliatedContactNumber"
-              label="Tel #"
-            />
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="affiliatedPerson"
+                label="Contact Person"
+              />
+            </div>
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="affiliatedAddress"
+                label="Office Address"
+              />
+            </div>
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="affiliatedContactNumber"
+                label="Tel #"
+              />
+            </div>
           </div>
         </CardContainer>
 
         <CardContainer description="ID Reference Number">
           <div className="flex flex-col gap-2">
             <div className=" flex gap-2 ">
-              <CustomFormField
-                control={form.control}
-                name="sssNumber"
-                label="SSS #"
-              />
-              <CustomFormField
-                control={form.control}
-                name="gsisNumber"
-                label="GSIS #"
-              />
-              <CustomFormField
-                control={form.control}
-                name="psnNumber"
-                label="PSN #"
-              />
-              <CustomFormField
-                control={form.control}
-                name="philhealthNumber"
-                label="PhilHealth #"
-              />
+              <div className="flex-1">
+                <CustomFormField
+                  control={form.control}
+                  name="sssNumber"
+                  label="SSS #"
+                />
+              </div>
+              <div className="flex-1">
+                <CustomFormField
+                  control={form.control}
+                  name="gsisNumber"
+                  label="GSIS #"
+                />
+              </div>
+              <div className="flex-1">
+                <CustomFormField
+                  control={form.control}
+                  name="psnNumber"
+                  label="PSN #"
+                />
+              </div>
+              <div className="flex-1">
+                <CustomFormField
+                  control={form.control}
+                  name="philhealthNumber"
+                  label="PhilHealth #"
+                />
+              </div>
             </div>
             <CustomCheckbox
               control={form.control}
@@ -429,76 +485,91 @@ export default function ApplicationForm() {
                 Fathers Name
               </p>
             </div>
-            <CustomFormField
-              control={form.control}
-              name="fathersLastName"
-              label="Last Name"
-            />
-            <CustomFormField
-              control={form.control}
-              name="fathersFirstName"
-              label="First Name"
-            />
-            <CustomFormField
-              control={form.control}
-              name="fathersMiddleName"
-              label="Middle Name"
-            />
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="fathersLastName"
+                label="Last Name"
+              />
+            </div>
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="fathersFirstName"
+                label="First Name"
+              />
+            </div>
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="fathersMiddleName"
+                label="Middle Name"
+              />
+            </div>
           </div>
           <div className="flex gap-2">
             <p className="text-sm text-muted-foreground pt-10  whitespace-nowrap w-28">
               Mothers Name
             </p>
-            <CustomFormField
-              control={form.control}
-              name="mothersLastName"
-              label="Last Name"
-            />
-            <CustomFormField
-              control={form.control}
-              name="mothersFirstName"
-              label="First Name"
-            />
-            <CustomFormField
-              control={form.control}
-              name="mothersMiddleName"
-              label="Middle Name"
-            />
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="mothersLastName"
+                label="Last Name"
+              />
+            </div>
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="mothersFirstName"
+                label="First Name"
+              />
+            </div>
+            <div className="flex-1">
+              <CustomFormField
+                control={form.control}
+                name="mothersMiddleName"
+                label="Middle Name"
+              />
+            </div>
           </div>
         </CardContainer>
 
         <div className="flex flex-col sm:flex-row gap-2">
           <div className="flex gap-3">
-            <p className="text-sm text-muted-foreground pt-5">
-              <span className="text-sm text-muted-foreground pt-5  whitespace-nowrap">
+            <p className="text-sm text-muted-foreground pt-4">
+              <span className="text-sm text-muted-foreground whitespace-nowrap">
                 Accomplished by
                 <span className="text-red-500">&#42;</span>
               </span>
             </p>
-            <CustomFormField
-              className="w-[300px]"
+          </div>
+          <div className="flex-1">
+            <CustomFormField control={form.control} name="accomplishedBy" />
+          </div>
+
+          <div className="flex-none">
+            <CustomCheckbox
               control={form.control}
-              name="accomplishedBy"
-              
+              label={"Applicant"}
+              name="isApplicant"
+            />
+          </div>
+          <div className="flex-none">
+            <CustomCheckbox
+              control={form.control}
+              label={"Guardian"}
+              name="isGuardian"
             />
           </div>
 
-          <CustomCheckbox
-            control={form.control}
-            label={"Applicant"}
-            name="isApplicant"
-          />
-          <CustomCheckbox
-            control={form.control}
-            label={"Guardian"}
-            name="isGuardian"
-          />
-
-          <CustomCheckbox
-            control={form.control}
-            label={"Representative"}
-            name="isRepresentative"
-          />
+          <div className="flex-none">
+            <CustomCheckbox
+              control={form.control}
+              label={"Representative"}
+              name="isRepresentative"
+            />
+          </div>
         </div>
 
         <Button type="submit" disabled={isDisabled} className="w-full">
