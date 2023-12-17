@@ -7,14 +7,16 @@ import {
   FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
+import { InputHTMLAttributes } from "react";
 
 interface CustomFormFieldProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
-  label?: String;
+  label?: string;
   placeholder?: string;
   className?: string;
   isRequired?: boolean;
+  type?: string;
 }
 export default function CustomFormField<T extends FieldValues>({
   control,
@@ -23,6 +25,7 @@ export default function CustomFormField<T extends FieldValues>({
   placeholder,
   className,
   isRequired,
+  type,
 }: CustomFormFieldProps<T>) {
   return (
     <FormField
@@ -30,11 +33,12 @@ export default function CustomFormField<T extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem className={`${className}`}>
-          <FormLabel>
+          <FormLabel className="whitespace-nowrap">
             {label} {isRequired && <span className="text-red-500">*</span>}
           </FormLabel>
           <FormControl>
             <Input
+              type={type}
               className={`min-w-full ${className}`}
               placeholder={placeholder}
               {...field}

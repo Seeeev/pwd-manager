@@ -36,7 +36,7 @@ export default function CustomSelectField<T extends FieldValues>({
       name={name}
       render={({ field }) => (
         <FormItem className="w-[190px]">
-          <FormLabel>
+          <FormLabel className="whitespace-nowrap">
             {label}
             {isRequired && <span className="text-red-500">*</span>}
           </FormLabel>

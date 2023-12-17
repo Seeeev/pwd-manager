@@ -26,6 +26,7 @@ import { educationalAttainment } from "@/app/constants/educationalAttainment";
 import { employmentStatus } from "@/app/constants/employmentStatus";
 import CustomCheckbox from "./CustomCheckbox2";
 import { ToastAction } from "./ui/toast";
+import { useState } from "react";
 
 export default function ApplicationForm() {
   const form = useForm<z.infer<typeof pwdSchema>>({
@@ -77,6 +78,7 @@ export default function ApplicationForm() {
   });
 
   function onSubmit(values: z.infer<typeof pwdSchema>) {
+    setDisabled(true);
     mutation.mutate(values);
   }
 
@@ -131,6 +133,7 @@ export default function ApplicationForm() {
         body: JSON.stringify(formValues),
       }),
     onSuccess: async (data, variables, context) => {
+      setDisabled(false);
       const res = await data.json();
       if (res.error) {
         form.setError("pwdNumber", { message: "PWD number already exists." });
@@ -140,6 +143,7 @@ export default function ApplicationForm() {
           action: <ToastAction altText="ok">ok</ToastAction>,
         });
       } else {
+        setDisabled(false);
         toast({
           title: "Success",
           description: "Application has been submitted",
@@ -159,16 +163,7 @@ export default function ApplicationForm() {
     },
   });
 
-  //   if (mutation.data) {
-  //     console.log(mutation.data);
-  //     if (mutation.data.status == 400) {
-  //       toast({
-  //         title: "Error",
-  //         description: mutation.data.statusText,
-  //         action: <ToastAction altText="Ok">Ok</ToastAction>,
-  //       });
-  //     }
-  //   }
+  const [isDisabled, setDisabled] = useState(false); // used to enable or disable submit button
 
   return (
     // <main className="container mx-auto flex min-h-screen items-center justify-center">
@@ -320,12 +315,14 @@ export default function ApplicationForm() {
               control={form.control}
               name="landline"
               label="Landline"
+              type="number"
             />
             <CustomFormField
               control={form.control}
               name="mobileNumber"
               label="Mobile Number"
               isRequired={true}
+              type="number"
             />
             <CustomFormField
               control={form.control}
@@ -428,8 +425,8 @@ export default function ApplicationForm() {
         <CardContainer description="Family Background">
           <div className="flex gap-2">
             <div className="w-28">
-              <p className="text-sm text-muted-foreground pt-10">
-                Fathers Name&semi;
+              <p className="text-sm text-muted-foreground pt-10 whitespace-nowrap">
+                Fathers Name
               </p>
             </div>
             <CustomFormField
@@ -449,8 +446,8 @@ export default function ApplicationForm() {
             />
           </div>
           <div className="flex gap-2">
-            <p className="text-sm text-muted-foreground pt-10">
-              Mothers Name&semi;
+            <p className="text-sm text-muted-foreground pt-10  whitespace-nowrap w-28">
+              Mothers Name
             </p>
             <CustomFormField
               control={form.control}
@@ -470,17 +467,20 @@ export default function ApplicationForm() {
           </div>
         </CardContainer>
 
-        <div className="flex gap-2">
-          <div className="flex flex-auto w-64">
-            <p className="text-sm text-muted-foreground pt-5 w-[200px]">
-              <span className="text-sm text-muted-foreground pt-5 w-[200px]">
+        <div className="flex flex-col sm:flex-row gap-2">
+          <div className="flex gap-3">
+            <p className="text-sm text-muted-foreground pt-5">
+              <span className="text-sm text-muted-foreground pt-5  whitespace-nowrap">
                 Accomplished by
                 <span className="text-red-500">&#42;</span>
               </span>
             </p>
-            <div className="w-full">
-              <CustomFormField control={form.control} name="accomplishedBy" />
-            </div>
+            <CustomFormField
+              className="w-[300px]"
+              control={form.control}
+              name="accomplishedBy"
+              
+            />
           </div>
 
           <CustomCheckbox
@@ -501,7 +501,7 @@ export default function ApplicationForm() {
           />
         </div>
 
-        <Button type="submit" className="w-full">
+        <Button type="submit" disabled={isDisabled} className="w-full">
           Submit
         </Button>
       </form>

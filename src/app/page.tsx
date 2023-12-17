@@ -47,9 +47,9 @@ import prisma from "@/prisma";
 export default function Home() {
   return (
     <>
-      <Card className="mx-10 my-3">
+      <Card className="mx-1 my-3 sm:mx-10">
         <CardHeader>
-          <div className="flex justify-between">
+          <div className="flex flex-col lg:flex-row justify-between">
             <div>
               <CardTitle className="text-primary">
                 PWD Application Form
