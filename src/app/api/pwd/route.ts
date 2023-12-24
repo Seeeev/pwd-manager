@@ -74,6 +74,13 @@ const newPwdData: any = excludeKey(prevPwdData, 'occupation'); // remove 'occupa
 
 
 export async function GET(){
-  const pwd = await prisma.pwd.findMany()
+  const pwd = await prisma.pwd.findMany({
+    include: {
+      disability: true,
+      barangay:true,
+      disabilityCause: true,
+      occupation: true
+    }
+  })
   return NextResponse.json(pwd);
 }
