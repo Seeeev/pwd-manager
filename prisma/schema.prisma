@@ -51,10 +51,12 @@ model Pwd {
   disability                  Disability[]
   disabilityCause             DisabilityCause[]
   bloodType                   String
-  occupation                  Occupation?
-  barangay                    Barangay?         @relation(fields: [barangayId], references: [id])
-  barangayId                  Int?
-  status                      Status?           @default(pending)
+
+  barangay     Barangay?   @relation(fields: [barangayId], references: [id])
+  barangayId   Int?
+  status       Status?     @default(pending)
+  occupation   Occupation? @relation(fields: [occupationId], references: [id])
+  occupationId Int?
 }
 
 model Barangay {
@@ -77,10 +79,9 @@ model DisabilityCause {
 }
 
 model Occupation {
-  id           Int     @id @default(autoincrement())
-  name         String
-  pwd          Pwd?    @relation(fields: [pwdPwdNumber], references: [pwdNumber])
-  pwdPwdNumber String? @unique
+  id   Int    @id @default(autoincrement())
+  name String
+  pwd  Pwd[]
 }
 
 // FOR AUTHENTICATION
