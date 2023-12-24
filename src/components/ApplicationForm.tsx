@@ -17,7 +17,13 @@ import { pwdSchema } from "@/schema/PwdForm";
 import { toast } from "@/components/ui/use-toast";
 import { MultiSelect, OptionType } from "@/components/MultiSelect2";
 import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
-import { Disability, DisabilityCause, Occupation, Pwd } from "@prisma/client";
+import {
+  Barangay,
+  Disability,
+  DisabilityCause,
+  Occupation,
+  Pwd,
+} from "@prisma/client";
 import CustomSelectField from "@/components/CustomSelectField";
 import { gender } from "@/app/constants/gender";
 import { civilStatus } from "@/app/constants/civilStatus";
@@ -42,15 +48,15 @@ export default function ApplicationForm() {
       lastName: "",
       firstName: "",
       accomplishedBy: "",
-      barangay: "",
+      barangay: undefined,
       birthDate: "",
       bloodType: undefined,
       civilStatus: undefined,
       gender: undefined,
       mobileNumber: "",
-      municipality: "",
-      province: "",
-      region: "",
+      // municipality: "",
+      // province: "",
+      // region: "",
       streetName: null,
       disability: [],
       disabilityCause: [],
@@ -93,10 +99,7 @@ export default function ApplicationForm() {
   let optionsDisability: OptionType[] = [];
 
   if (disability.data) {
-    console.log(`disability:`, disability.data);
-    optionsDisability = disability.data.map(
-      ({ pwdPwdNumber, ...rest }) => rest
-    );
+    optionsDisability = disability.data;
   }
 
   const disabilityCause = useQuery<DisabilityCause[]>({
@@ -107,10 +110,7 @@ export default function ApplicationForm() {
   let optionsDisabilityCause: OptionType[] = [];
 
   if (disabilityCause.data) {
-    console.log(`disabilityCause:`, disabilityCause.data);
-    optionsDisabilityCause = disabilityCause.data.map(
-      ({ pwdPwdNumber, ...rest }) => rest
-    );
+    optionsDisabilityCause = disabilityCause.data;
   }
 
   const occupation = useQuery<Occupation[]>({
@@ -123,7 +123,18 @@ export default function ApplicationForm() {
 
   if (occupation.data) {
     optionsOccupation = occupation.data;
-    console.log(occupation.data);
+  }
+
+  const barangay = useQuery<Barangay[]>({
+    queryKey: ["barangay"],
+    queryFn: () =>
+      fetch("api/barangay", { method: "GET" }).then((val) => val.json()),
+  });
+
+  let optionsBarangay: { id: number; name: String }[] = [];
+
+  if (barangay.data) {
+    optionsBarangay = barangay.data;
   }
 
   const mutation = useMutation({
@@ -216,7 +227,7 @@ export default function ApplicationForm() {
           </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           <div className="flex-1">
             <CustomFormField
               control={form.control}
@@ -236,7 +247,7 @@ export default function ApplicationForm() {
             />
           </div>
 
-          <div className="flex1">
+          <div className="flex-1">
             <CustomSelectField
               control={form.control}
               data={civilStatus}
@@ -305,14 +316,24 @@ export default function ApplicationForm() {
               />
             </div>
             <div className="flex-1">
-              <CustomFormField
+              {/* <CustomFormField
                 control={form.control}
                 name="barangay"
                 label="Barangay"
                 isRequired={true}
-              />
+              /> */}
+              <div className="flex-1">
+                <CustomSelectField
+                  control={form.control}
+                  data={optionsBarangay}
+                  name="barangay"
+                  label="Barangay"
+                  placeholder="Select your barangay"
+                  isRequired={true}
+                />
+              </div>
             </div>
-            <div className="flex-1">
+            {/* <div className="flex-1">
               <CustomFormField
                 control={form.control}
                 name="municipality"
@@ -335,7 +356,7 @@ export default function ApplicationForm() {
                 label="Region"
                 isRequired={true}
               />
-            </div>
+            </div> */}
           </div>
         </CardContainer>
 
@@ -548,14 +569,14 @@ export default function ApplicationForm() {
             <CustomFormField control={form.control} name="accomplishedBy" />
           </div>
 
-          <div className="flex-none">
+          <div className="flex-1">
             <CustomCheckbox
               control={form.control}
               label={"Applicant"}
               name="isApplicant"
             />
           </div>
-          <div className="flex-none">
+          <div className="flex-1">
             <CustomCheckbox
               control={form.control}
               label={"Guardian"}
@@ -563,7 +584,7 @@ export default function ApplicationForm() {
             />
           </div>
 
-          <div className="flex-none">
+          <div className="flex-1">
             <CustomCheckbox
               control={form.control}
               label={"Representative"}

@@ -6,6 +6,8 @@ import { Providers } from "@/provider";
 import Head from "next/head";
 import { EdgeStoreProvider } from "@/lib/edgestore";
 
+import { SessionProvider } from "next-auth/react";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -24,10 +26,12 @@ export default function RootLayout({
         <link rel="icon" href="/img/tinambac-seal.png" sizes="any" />
       </head>
       <body className={inter.className}>
-        <EdgeStoreProvider>
-          <Providers>{children}</Providers>
-          <Toaster />
-        </EdgeStoreProvider>
+     
+          <EdgeStoreProvider>
+            <Providers>{children}</Providers>
+            <Toaster />
+          </EdgeStoreProvider>
+
       </body>
     </html>
   );

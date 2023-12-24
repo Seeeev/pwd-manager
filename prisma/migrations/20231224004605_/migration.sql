@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Pwd" ALTER COLUMN "status" DROP NOT NULL;

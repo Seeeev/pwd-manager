@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-
+import { signOut } from "next-auth/react";
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
@@ -38,6 +38,17 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
           {item.title}
         </Link>
       ))}
+      <p
+        onClick={() => signOut({ callbackUrl: "/admin" })}
+        className={cn(
+          buttonVariants({ variant: "ghost" }),
+          "hover:bg-transparent hover:underline",
+          "justify-start",
+          "cursor-pointer"
+        )}
+      >
+        Sign Out
+      </p>
     </nav>
   );
 }

@@ -35,14 +35,18 @@ const newPwdData: any = excludeKey(prevPwdData, 'occupation'); // remove 'occupa
   const createData: any = {
     ...newPwdData,
     birthDate: new Date(newPwdData.birthDate),
+    barangay: {
+      connect: {
+        id: parseInt(newPwdData.barangay)
+      }
+    },
     disability: {
       connect: (newPwdData.disability).map((id:number) => ({ id }))
-      },
-      disabilityCause: {
+    },
+    disabilityCause: {
       connect: newPwdData.disabilityCause.map((id: number) => ({ id }))
-      },
+    },
   }
-
 
   if(prevPwdData.occupation){
     createData.occupation = {
@@ -57,13 +61,19 @@ const newPwdData: any = excludeKey(prevPwdData, 'occupation'); // remove 'occupa
         disability: true,
         disabilityCause: true,
         occupation: true,
+        barangay: true,
       },
 })
-
 
     return NextResponse.json({ pwdId: newPwdData.pwdNumber });
   } catch (error) {
     console.error("Error processing request:", error);
     return NextResponse.json({ error: "Invalid request data" }, { status: 400 });
   }
+}
+
+
+export async function GET(){
+  const pwd = await prisma.pwd.findMany()
+  return NextResponse.json(pwd);
 }

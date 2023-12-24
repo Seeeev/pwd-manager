@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Status {
+  pending
+  approved
+  rejected
+}
+
 model Pwd {
   pwdNumber                   String            @id
   firstName                   String
@@ -14,10 +20,6 @@ model Pwd {
   lastName                    String?
   suffix                      String?
   streetName                  String?
-  barangay                    String
-  municipality                String
-  province                    String
-  region                      String
   landline                    String?
   mobileNumber                String
   emailAddress                String?
@@ -50,20 +52,28 @@ model Pwd {
   disabilityCause             DisabilityCause[]
   bloodType                   String
   occupation                  Occupation?
+  barangay                    Barangay?         @relation(fields: [barangayId], references: [id])
+  barangayId                  Int?
+  status                      Status?           @default(pending)
+}
+
+model Barangay {
+  id   Int    @id @default(autoincrement())
+  name String
+  pwd  Pwd[]
+  User User[]
 }
 
 model Disability {
-  id           Int     @id @default(autoincrement())
-  name         String
-  pwdPwdNumber String?
-  Pwd          Pwd?    @relation(fields: [pwdPwdNumber], references: [pwdNumber])
+  id   Int    @id @default(autoincrement())
+  name String
+  pwd  Pwd[]
 }
 
 model DisabilityCause {
-  id           Int     @id @default(autoincrement())
-  name         String
-  pwdPwdNumber String?
-  Pwd          Pwd?    @relation(fields: [pwdPwdNumber], references: [pwdNumber])
+  id   Int    @id @default(autoincrement())
+  name String
+  pwd  Pwd[]
 }
 
 model Occupation {
@@ -71,4 +81,51 @@ model Occupation {
   name         String
   pwd          Pwd?    @relation(fields: [pwdPwdNumber], references: [pwdNumber])
   pwdPwdNumber String? @unique
+}
+
+// FOR AUTHENTICATION
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  admin
+  barangay
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  password      String
+  emailVerified DateTime?
+  image         String?
+  role          Role      @default(barangay)
+  accounts      Account[]
+  sessions      Session[]
+  barangay      Barangay? @relation(fields: [barangayId], references: [id])
+  barangayId    Int?
 }
