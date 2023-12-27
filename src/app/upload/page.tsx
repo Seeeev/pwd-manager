@@ -4,13 +4,52 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "@/components/ui/use-toast";
 import { useEdgeStore } from "@/lib/edgestore";
+import { Pwd } from "@prisma/client";
 import { useState } from "react";
+
+
+type keyOfPwd = keyof Partial<Pwd>
+
+type UploadImage = {
+  description: String;
+  path?: keyOfPwd;
+};
 
 export default function SingleImageDropzoneUsage() {
   const [file, setFile] = useState<File>();
   const { edgestore } = useEdgeStore();
   const [progress, setProgress] = useState(10);
   const [showProgress, setShowProgress] = useState(false);
+  const [isApparent, setIsApparent] = useState<boolean | null>(true);
+
+  const baseUrl = '12345';
+
+  const apparent: UploadImage[] = [
+    {
+      description: "1 piece recent ID picture 1x1",
+      path: "pathAId1x1",
+    },
+    {
+      description: "1 piece recent ID picture 2x2",
+      path: "pathAId2x2",
+    },
+    {
+      description: "1 piece whole boldy picture(if physical disability)",
+      path: "pathAWholeBody",
+    },
+    {
+      description: "Medical Cerification",
+      path: "pathAMedicalCertificate",
+    },
+    {
+      description: "Certificate of Barangay Residency or valid ID",
+      path: "pathABarangayResidency",
+    },
+    {
+      description: "Birth Certificate",
+      path: "pathABirthCertificate",
+    },
+  ];
 
   return (
     <div className="w-screen h-screen gap-2 bg-black flex flex-col items-center justify-center">
@@ -48,7 +87,7 @@ export default function SingleImageDropzoneUsage() {
                 }
               },
               options: {
-                manualFileName: `12-1212-121-121111/${file.name}`,
+                manualFileName: `${baseUrl}/${file.name}`,
               },
             });
             toast({
