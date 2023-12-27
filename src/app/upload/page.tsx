@@ -4,15 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "@/components/ui/use-toast";
 import { useEdgeStore } from "@/lib/edgestore";
-import { Pwd } from "@prisma/client";
+import { ApparentImage, NonApparentImage, Pwd } from "@prisma/client";
 import { useState } from "react";
-
-
-type keyOfPwd = keyof Partial<Pwd>
 
 type UploadImage = {
   description: String;
-  path?: keyOfPwd;
+  path?: Partial<keyof ApparentImage | NonApparentImage>;
 };
 
 export default function SingleImageDropzoneUsage() {
@@ -22,7 +19,7 @@ export default function SingleImageDropzoneUsage() {
   const [showProgress, setShowProgress] = useState(false);
   const [isApparent, setIsApparent] = useState<boolean | null>(true);
 
-  const baseUrl = '12345';
+  const baseUrl = "12345";
 
   const apparent: UploadImage[] = [
     {
