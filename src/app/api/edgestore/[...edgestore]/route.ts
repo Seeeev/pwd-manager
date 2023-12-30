@@ -14,13 +14,15 @@ const edgeStoreRouter = es.router({
 const handler = createEdgeStoreNextHandler({
   router: edgeStoreRouter,
 });
+ 
 
 export type EdgeStoreRouter = typeof edgeStoreRouter;
 
 export const backendClient = initEdgeStoreClient({
   router: edgeStoreRouter,
 });
- 
+
+
 export { handler as GET, handler as POST };
  
 /**
