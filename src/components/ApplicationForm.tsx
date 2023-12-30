@@ -2,8 +2,8 @@
 import CustomFormField from "@/components/CustomFormField";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Path, useForm } from "react-hook-form";
-
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -34,10 +34,9 @@ import { employmentStatus } from "@/app/constants/employmentStatus";
 import CustomCheckbox from "./CustomCheckbox2";
 import { ToastAction } from "./ui/toast";
 import { useState } from "react";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
 
 export default function ApplicationForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof pwdSchema>>({
     mode: "onChange",
     resolver: zodResolver(pwdSchema),
@@ -54,9 +53,6 @@ export default function ApplicationForm() {
       civilStatus: undefined,
       gender: undefined,
       mobileNumber: "",
-      // municipality: "",
-      // province: "",
-      // region: "",
       streetName: null,
       disability: [],
       disabilityCause: [],
@@ -96,46 +92,30 @@ export default function ApplicationForm() {
     queryFn: () => fetch("api/disability").then((val) => val.json()),
   });
 
-  let optionsDisability: OptionType[] = [];
-
-  if (disability.data) {
-    optionsDisability = disability.data;
-  }
-
   const disabilityCause = useQuery<DisabilityCause[]>({
     queryKey: ["disabilityCause"],
     queryFn: () => fetch("api/disabilityCause").then((val) => val.json()),
   });
-
-  let optionsDisabilityCause: OptionType[] = [];
-
-  if (disabilityCause.data) {
-    optionsDisabilityCause = disabilityCause.data;
-  }
 
   const occupation = useQuery<Occupation[]>({
     queryKey: ["occupation"],
     queryFn: () =>
       fetch("api/occupation", { method: "GET" }).then((val) => val.json()),
   });
-
-  let optionsOccupation: { id: number; name: String }[] = [];
-
-  if (occupation.data) {
-    optionsOccupation = occupation.data;
-  }
-
   const barangay = useQuery<Barangay[]>({
     queryKey: ["barangay"],
     queryFn: () =>
       fetch("api/barangay", { method: "GET" }).then((val) => val.json()),
   });
 
-  let optionsBarangay: { id: number; name: String }[] = [];
+  let optionsDisability: OptionType[] = disability?.data || [];
 
-  if (barangay.data) {
-    optionsBarangay = barangay.data;
-  }
+  let optionsDisabilityCause: OptionType[] = disabilityCause?.data || [];
+
+  let optionsOccupation: { id: number; name: String }[] =
+    occupation?.data || [];
+
+  let optionsBarangay: { id: number; name: String }[] = barangay?.data || [];
 
   const mutation = useMutation({
     mutationFn: (formValues: z.infer<typeof pwdSchema>) =>
@@ -149,6 +129,7 @@ export default function ApplicationForm() {
     onSuccess: async (data, variables, context) => {
       setDisabled(false);
       const res = await data.json();
+      console.log(res);
       if (res.error) {
         form.setError("pwdNumber", { message: "PWD number already exists." });
         toast({
@@ -160,11 +141,16 @@ export default function ApplicationForm() {
         setDisabled(false);
         toast({
           title: "Success",
-          description: "Application has been submitted",
+          description:
+            "Application has been submitted. Redirecting to file uploads, plese wait..",
           action: <ToastAction altText="ok">ok</ToastAction>,
         });
         form.reset();
         mutation.reset();
+
+        setTimeout(() => {
+          router.push(`/upload/${res.pwdId}`);
+        }, 2000);
       }
     },
 
@@ -180,7 +166,6 @@ export default function ApplicationForm() {
   const [isDisabled, setDisabled] = useState(false); // used to enable or disable submit button
 
   return (
-    // <main className="container mx-auto flex min-h-screen items-center justify-center">
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -316,12 +301,6 @@ export default function ApplicationForm() {
               />
             </div>
             <div className="flex-1">
-              {/* <CustomFormField
-                control={form.control}
-                name="barangay"
-                label="Barangay"
-                isRequired={true}
-              /> */}
               <div className="flex-1">
                 <CustomSelectField
                   control={form.control}
@@ -333,30 +312,6 @@ export default function ApplicationForm() {
                 />
               </div>
             </div>
-            {/* <div className="flex-1">
-              <CustomFormField
-                control={form.control}
-                name="municipality"
-                label="City/Municipality"
-                isRequired={true}
-              />
-            </div>
-            <div className="flex-1">
-              <CustomFormField
-                control={form.control}
-                name="province"
-                label="Province"
-                isRequired={true}
-              />
-            </div>
-            <div className="flex-1">
-              <CustomFormField
-                control={form.control}
-                name="region"
-                label="Region"
-                isRequired={true}
-              />
-            </div> */}
           </div>
         </CardContainer>
 

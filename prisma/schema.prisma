@@ -58,34 +58,39 @@ model Pwd {
   occupation   Occupation? @relation(fields: [occupationId], references: [id])
   occupationId Int?
 
-  apparentImage ApparentImage? @relation(fields: [apparentId], references: [id])
-  apparentId    Int?
-
-  nonApparentImage NonApparentImage? @relation(fields: [nonApparentId], references: [id])
-  nonApparentId    Int?
+  isApparent Boolean?
+  imageUrls  ImageUrls[]
 }
 
-model ApparentImage {
-  id                      Int     @id @default(autoincrement())
-  pathAId1x1              String?
-  pathAId2x2              String?
-  pathAWholeBody          String?
-  pathAMedicalCertificate String?
-  pathABarangayResidency  String?
-  pathABirthCertificate   String?
-  pwd                     Pwd[]
+model ImageUrls {
+  id  Int    @id @default(autoincrement())
+  url String
+
+  Pwd          Pwd?    @relation(fields: [pwdPwdNumber], references: [pwdNumber])
+  pwdPwdNumber String?
 }
 
-model NonApparentImage {
-  id                     Int     @id @default(autoincrement())
-  pathNId1x1             String?
-  pathNId2x2             String?
-  pathNGovId             String?
-  pathNBarangayResidency String?
-  pathNGuardian          String?
-  pathNRepresentative    String?
-  pwd                    Pwd[]
-}
+// model ApparentImage {
+//   id                      Int     @id @default(autoincrement())
+//   pathAId1x1              String?
+//   pathAId2x2              String?
+//   pathAWholeBody          String?
+//   pathAMedicalCertificate String?
+//   pathABarangayResidency  String?
+//   pathABirthCertificate   String?
+//   pwd                     Pwd[]
+// }
+
+// model NonApparentImage {
+//   id                     Int     @id @default(autoincrement())
+//   pathNId1x1             String?
+//   pathNId2x2             String?
+//   pathNGovId             String?
+//   pathNBarangayResidency String?
+//   pathNGuardian          String?
+//   pathNRepresentative    String?
+//   pwd                    Pwd[]
+// }
 
 model Barangay {
   id   Int    @id @default(autoincrement())
