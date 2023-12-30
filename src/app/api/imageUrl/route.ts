@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma";
-import { backendClient } from "../edgestore/[...edgestore]/route";
+import { edgeStoreRouter } from "../edgestore/[...edgestore]/route";
+import { initEdgeStoreClient } from "@edgestore/server/core";
 
 export async function POST(request: Request){
+
+     const backendClient = initEdgeStoreClient({
+  router: edgeStoreRouter,
+});
 
   const data: { pwdNumber: string; url: string } = await request.json()
   
