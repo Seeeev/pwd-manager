@@ -97,7 +97,6 @@ export default function MultiImageDropzoneUsage({
     <div>
       <MultiImageDropzone
         value={fileStates}
-        
         dropzoneOptions={{
           maxFiles: 6,
         }}
