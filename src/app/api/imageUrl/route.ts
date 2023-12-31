@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma";
-import { backendClient } from "@/lib/edgestore";
-
+import { backendClient } from "@/lib/edgestore-api-tools";
 
 export async function POST(request: Request){
 
