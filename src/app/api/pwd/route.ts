@@ -83,7 +83,7 @@ export async function GET(){
     }
   })
 
-  pwd.map(val=> console.log(val.disability))
+  console.log(pwd)
   return NextResponse.json(pwd);
 }
 

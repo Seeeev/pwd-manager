@@ -107,7 +107,7 @@ import { Loader } from "lucide-react";
 
 const sidebarNavItems = [
   {
-    title: "Profile",
+    title: "PWD",
     href: "/admin",
   },
   {
@@ -158,14 +158,43 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
     );
   }
 
+  const logos = (
+    <div className="flex gap-3">
+      <Image
+        className="w-auto h-auto"
+        src={"/img/ph_flag.png"}
+        width={80}
+        height={80}
+        alt="ph"
+      />
+      <Image
+        className="w-auto h-auto rounded-full"
+        src={"/img/disability.png"}
+        width={60}
+        height={60}
+        alt="ph"
+      />
+      <Image
+        className="w-auto h-auto"
+        src={"/img/tinambac-seal.png"}
+        width={60}
+        height={60}
+        alt="ph"
+      />
+    </div>
+  );
+
   return (
     <>
       <div className=" space-y-6 p-10 pb-16 ">
-        <div className="space-y-0.5">
-          <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
-          <p className="text-muted-foreground">
-            Manage your account settings and set e-mail preferences.
-          </p>
+        <div className="flex justify-between">
+          <div className="space-y-0.5">
+            <h2 className="text-2xl font-bold tracking-tight">Admin Panel</h2>
+            <p className="text-muted-foreground">
+              Manage persons with disability and other data.
+            </p>
+          </div>
+          {logos}
         </div>
         <Separator className="my-6" />
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">

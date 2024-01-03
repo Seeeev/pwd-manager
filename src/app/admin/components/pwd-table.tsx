@@ -7,6 +7,7 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 
 import {
@@ -31,6 +32,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import prisma from "@/prisma";
+import EditPwd from "./edit-pwd-sheet";
+import DataTablePagination from "./table-pagination";
 
 type tableType = {
   pwdNumber: String;
@@ -55,16 +58,8 @@ const columns: ColumnDef<tableType>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={async () =>
-                await prisma?.pwd.update({
-                  where: { pwdNumber: pwd.pwdNumber as string },
-                  data: { status: "approved" },
-                })
-              }
-            >
-              Copy payment ID
-            </DropdownMenuItem>
+            <EditPwd data={pwd.pwdNumber} />
+            <DropdownMenuItem>Copy payment ID</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
@@ -104,11 +99,11 @@ export default function PwdTable() {
   useEffect(() => {
     if (query.data) {
       console.log(query.data);
-      query.data.map((val: Pwd) => console.log(val.status));
-      const newData: tableType[] = query.data.map((val: Pwd) => {
+      query.data.map((val: any) => console.log(val.status));
+      const newData: tableType[] = query.data.map((val: any) => {
         const pwdNumber = val.pwdNumber;
         const name = `${val.lastName}, ${val.firstName} ${val.middleName} ${val.suffix}`;
-        const barangay = val.barangayId;
+        const barangay = val.barangay.name;
         const status = val.status;
         return {
           barangay: barangay,
@@ -126,52 +121,62 @@ export default function PwdTable() {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+    <div>
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <DataTablePagination table={table} />
     </div>
   );
 }
