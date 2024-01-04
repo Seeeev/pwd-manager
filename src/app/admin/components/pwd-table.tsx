@@ -11,6 +11,15 @@ import {
 } from "@tanstack/react-table";
 
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import {
   Table,
   TableBody,
   TableCell,
@@ -87,6 +96,8 @@ const columns: ColumnDef<tableType>[] = [
 ];
 
 export default function PwdTable() {
+  const [open, setOpen] = useState(false);
+
   const [data, setData] = useState<tableType[]>([]);
   const query = useQuery({
     queryKey: ["pwd"],
@@ -98,22 +109,25 @@ export default function PwdTable() {
 
   useEffect(() => {
     if (query.data) {
-      console.log(query.data);
-      query.data.map((val: any) => console.log(val.status));
-      const newData: tableType[] = query.data.map((val: any) => {
-        const pwdNumber = val.pwdNumber;
-        const name = `${val.lastName}, ${val.firstName} ${val.middleName} ${val.suffix}`;
-        const barangay = val.barangay.name;
-        const status = val.status;
-        return {
-          barangay: barangay,
-          name: name,
-          pwdNumber: pwdNumber,
-          status: status!,
-        };
-      });
+      if (query.data.error) {
+        setOpen(true);
+      } else {
+        query.data.map((val: any) => console.log(val.status));
+        const newData: tableType[] = query.data.map((val: any) => {
+          const pwdNumber = val.pwdNumber;
+          const name = `${val.lastName}, ${val.firstName} ${val.middleName} ${val.suffix}`;
+          const barangay = val.barangay.name;
+          const status = val.status;
+          return {
+            barangay: barangay,
+            name: name,
+            pwdNumber: pwdNumber,
+            status: status!,
+          };
+        });
 
-      setData(newData);
+        setData(newData);
+      }
     }
   }, [query.data]);
 
@@ -125,58 +139,72 @@ export default function PwdTable() {
   });
 
   return (
-    <div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+    <>
+      <Dialog open={open} onOpenChange={setOpen}>
+        {/* <DialogTrigger>Open</DialogTrigger> */}
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Error fetching data</DialogTitle>
+            <DialogDescription>
+              Database might be offline or disable any vpn, contact the
+              administrator to fix the issue.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+      <div>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <DataTablePagination table={table} />
       </div>
-      <DataTablePagination table={table} />
-    </div>
+    </>
   );
 }

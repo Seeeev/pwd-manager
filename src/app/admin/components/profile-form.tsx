@@ -88,7 +88,6 @@ export default function ProfileForm() {
   }
 
   const session = useSession();
-  console.log(session.data?.user);
 
   return <></>;
 

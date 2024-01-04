@@ -74,6 +74,7 @@ const newPwdData: any = excludeKey(prevPwdData, 'occupation'); // remove 'occupa
 
 
 export async function GET(){
+  try {
   const pwd = await prisma.pwd.findMany({
     include: {
       disability: true,
@@ -82,8 +83,11 @@ export async function GET(){
       occupation: true
     }
   })
-
-  console.log(pwd)
+    console.log(pwd)
   return NextResponse.json(pwd);
+  }catch(error){
+    console.log(error)
+      return NextResponse.json({ error: "Error fetching data" }, { status: 400 });
+  }
 }
 
