@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 try {
   const prevPwdData = await request.json() // this contains key 'occcupation' which is nullable in prisma 
 
-const newPwdData: any = excludeKey(prevPwdData, 'occupation'); // remove 'occupation' prevent error
+  const newPwdData: any = excludeKey(prevPwdData, 'occupation'); // remove 'occupation' prevent error
 
   const existingPwd = await prisma.pwd.findUnique({
       where: { pwdNumber: newPwdData.pwdNumber },
@@ -74,6 +74,7 @@ const newPwdData: any = excludeKey(prevPwdData, 'occupation'); // remove 'occupa
 
 
 export async function GET(){
+
   try {
   const pwd = await prisma.pwd.findMany({
     include: {
@@ -91,3 +92,8 @@ export async function GET(){
   }
 }
 
+export async function PATCH(request: Request) {
+  const pwdNumber = await request.json()
+  
+  return NextResponse.json({})
+}

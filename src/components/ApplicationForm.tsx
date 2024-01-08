@@ -34,6 +34,8 @@ import { employmentStatus } from "@/app/constants/employmentStatus";
 import CustomCheckbox from "./CustomCheckbox2";
 import { ToastAction } from "./ui/toast";
 import { useState } from "react";
+import useOptions from "@/lib/get-pwd-options";
+// import { optionsDisability, optionsDisabilityCause, optionsBarangay, optionsOccupation } from "@/lib/get-pwd-options";
 
 export default function ApplicationForm() {
   const router = useRouter();
@@ -87,35 +89,35 @@ export default function ApplicationForm() {
     mutation.mutate(values);
   }
 
-  const disability = useQuery<Disability[]>({
-    queryKey: ["disability"],
-    queryFn: () => fetch("api/disability").then((val) => val.json()),
-  });
+  // const disability = useQuery<Disability[]>({
+  //   queryKey: ["disability"],
+  //   queryFn: () => fetch("api/disability").then((val) => val.json()),
+  // });
 
-  const disabilityCause = useQuery<DisabilityCause[]>({
-    queryKey: ["disabilityCause"],
-    queryFn: () => fetch("api/disabilityCause").then((val) => val.json()),
-  });
+  // const disabilityCause = useQuery<DisabilityCause[]>({
+  //   queryKey: ["disabilityCause"],
+  //   queryFn: () => fetch("api/disabilityCause").then((val) => val.json()),
+  // });
 
-  const occupation = useQuery<Occupation[]>({
-    queryKey: ["occupation"],
-    queryFn: () =>
-      fetch("api/occupation", { method: "GET" }).then((val) => val.json()),
-  });
-  const barangay = useQuery<Barangay[]>({
-    queryKey: ["barangay"],
-    queryFn: () =>
-      fetch("api/barangay", { method: "GET" }).then((val) => val.json()),
-  });
+  // const occupation = useQuery<Occupation[]>({
+  //   queryKey: ["occupation"],
+  //   queryFn: () =>
+  //     fetch("api/occupation", { method: "GET" }).then((val) => val.json()),
+  // });
+  // const barangay = useQuery<Barangay[]>({
+  //   queryKey: ["barangay"],
+  //   queryFn: () =>
+  //     fetch("api/barangay", { method: "GET" }).then((val) => val.json()),
+  // });
 
-  let optionsDisability: OptionType[] = disability?.data || [];
+  // let optionsDisability: OptionType[] = disability?.data || [];
 
-  let optionsDisabilityCause: OptionType[] = disabilityCause?.data || [];
+  // let optionsDisabilityCause: OptionType[] = disabilityCause?.data || [];
 
-  let optionsOccupation: { id: number; name: String }[] =
-    occupation?.data || [];
+  // let optionsOccupation: { id: number; name: String }[] =
+  //   occupation?.data || [];
 
-  let optionsBarangay: { id: number; name: String }[] = barangay?.data || [];
+  // let optionsBarangay: { id: number; name: String }[] = barangay?.data || [];
 
   const mutation = useMutation({
     mutationFn: (formValues: z.infer<typeof pwdSchema>) =>
@@ -162,6 +164,14 @@ export default function ApplicationForm() {
       });
     },
   });
+
+  // gets the list of options and render out as a dropdown or select
+  const {
+    optionsDisability,
+    optionsDisabilityCause,
+    optionsOccupation,
+    optionsBarangay,
+  } = useOptions();
 
   const [isDisabled, setDisabled] = useState(false); // used to enable or disable submit button
 
@@ -440,9 +450,6 @@ export default function ApplicationForm() {
               control={form.control}
               label={"Philheath Member"}
               name="isPhilhealthMember"
-              //   onChange={(value) =>
-              //     handleCheckboxChange("isPhilhealthMember", value)
-              //   }
             />
 
             {/* Checkbox for Philhealth Member Dependent */}

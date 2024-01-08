@@ -13,6 +13,7 @@ interface CustomFormFieldProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
   label?: string;
+  isReadOnly?: boolean;
   placeholder?: string;
   className?: string;
   isRequired?: boolean;
@@ -25,6 +26,7 @@ export default function CustomFormField<T extends FieldValues>({
   placeholder,
   className,
   isRequired,
+  isReadOnly = false,
   type,
 }: CustomFormFieldProps<T>) {
   return (
@@ -38,6 +40,8 @@ export default function CustomFormField<T extends FieldValues>({
           </FormLabel>
           <FormControl>
             <Input
+              readOnly={isReadOnly}
+             
               type={type}
               className={`min-w-full ${className}`}
               placeholder={placeholder}

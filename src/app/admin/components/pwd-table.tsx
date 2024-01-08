@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { $Enums, Pwd } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
+import { $Enums, Pwd, Status } from "@prisma/client";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   ColumnDef,
   flexRender,
@@ -40,63 +40,99 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import prisma from "@/prisma";
-import EditPwd from "./edit-pwd-sheet";
 import DataTablePagination from "./table-pagination";
-
-type tableType = {
-  pwdNumber: String;
-  name: String;
-  barangay: number | null;
-  status: $Enums.Status;
-};
-
-const columns: ColumnDef<tableType>[] = [
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const pwd = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <EditPwd data={pwd.pwdNumber} />
-            <DropdownMenuItem>Copy payment ID</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-  },
-  {
-    accessorKey: "pwdNumber",
-    header: "PWD Number",
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
-  },
-  {
-    accessorKey: "barangay",
-    header: "Barangay",
-  },
-];
+import EditPwdDialog from "./edit-pwd-dialog";
+import { useDialogStore } from "@/zustand-states/states";
 
 export default function PwdTable() {
   const [open, setOpen] = useState(false);
+
+  type tableType = {
+    pwdNumber: String;
+    name: String;
+    barangay: number | null;
+    status: $Enums.Status;
+  };
+
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  const mutation = useMutation({
+    mutationFn: (data: { pwdNumber: String; status: Status }) =>
+      fetch("api/status", { method: "PUT", body: JSON.stringify(data) }).then(
+        (val) => val.json()
+      ),
+    onMutate: () => setIsDisabled(true),
+    onSuccess: (data) => {
+      setIsDisabled(false);
+      query.refetch();
+    },
+    onError: (data) => {
+      setIsDisabled(false);
+      console.log("error");
+    },
+  });
+
+  const columns: ColumnDef<tableType>[] = [
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const pwd = row.original;
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <EditPwdDialog query={query} pwdNumber={pwd.pwdNumber} />
+              <DropdownMenuItem
+                disabled={isDisabled}
+                onClick={() =>
+                  mutation.mutate({
+                    pwdNumber: pwd.pwdNumber,
+                    status: "approved",
+                  })
+                }
+              >
+                Approve
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() =>
+                  mutation.mutate({
+                    pwdNumber: pwd.pwdNumber,
+                    status: "rejected",
+                  })
+                }
+              >
+                Reject
+              </DropdownMenuItem>
+              <DropdownMenuItem>View payment details</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+    },
+    {
+      accessorKey: "pwdNumber",
+      header: "PWD Number",
+    },
+    {
+      accessorKey: "name",
+      header: "Name",
+    },
+    {
+      accessorKey: "barangay",
+      header: "Barangay",
+    },
+  ];
 
   const [data, setData] = useState<tableType[]>([]);
   const query = useQuery({
@@ -137,6 +173,15 @@ export default function PwdTable() {
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+
+  const [externalDialogOpen, setExternalDialogOpen] = useState(false);
+
+  const handleExternalDialogOpenChange = (newOpenState: boolean) => {
+    setExternalDialogOpen(newOpenState);
+    // Additional logic if needed when the dialog state changes externally
+  };
+
+  const updateDialogState = useDialogStore((state) => state.update);
 
   return (
     <>
