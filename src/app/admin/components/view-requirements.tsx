@@ -69,6 +69,7 @@ export default function ViewRequirements({ pwdNumber }: ViewRequirementsProps) {
             <div className="flex flex-col gap-3">
               {(mutation.data.imageUrls as ImageUrls[]).map((val) => (
                 <Image
+                  key={val.url}
                   src={val.url}
                   className="w-auto h-auto"
                   width={700}
