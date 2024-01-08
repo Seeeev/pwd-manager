@@ -43,8 +43,12 @@ import {
 import DataTablePagination from "./table-pagination";
 import EditPwdDialog from "./edit-pwd-dialog";
 import { useDialogStore } from "@/zustand-states/states";
+import { useSession } from "next-auth/react";
+import ViewRequirements from "./view-requirements";
 
 export default function PwdTable() {
+  const session = useSession();
+
   const [open, setOpen] = useState(false);
 
   type tableType = {
@@ -87,7 +91,11 @@ export default function PwdTable() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <EditPwdDialog query={query} pwdNumber={pwd.pwdNumber} />
+              {session.data?.user.role == "admin" && (
+                <div className="pl-2">
+                  <EditPwdDialog query={query} pwdNumber={pwd.pwdNumber} />
+                </div>
+              )}
               <DropdownMenuItem
                 disabled={isDisabled}
                 onClick={() =>
@@ -110,7 +118,9 @@ export default function PwdTable() {
               >
                 Reject
               </DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
+              <div className="pl-2">
+                <ViewRequirements pwdNumber={pwd.pwdNumber} />
+              </div>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -135,6 +145,7 @@ export default function PwdTable() {
   ];
 
   const [data, setData] = useState<tableType[]>([]);
+
   const query = useQuery({
     queryKey: ["pwd"],
     queryFn: () =>
