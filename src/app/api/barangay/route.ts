@@ -27,23 +27,38 @@ export async function DELETE(request: Request){
 
 }
 
-// export async function POST(request: Request){
-//   const data: sessionType = await request.json()
+export async function PATCH(request: Request){
+  const barangay: Barangay = await request.json()
 
-//   const barangay = data.data?.user.role == 'admin' && await prisma.barangay.findMany()
-  
-//   const specificBarangay = data.data?.user.role == 'barangay' && await prisma.barangay.findMany({
-//     where: {
-//       id: {
-//         equals: data.data.user.barangayId!
-//       }
-//     }
-//   })
-  
-//   if(barangay){
-//     return NextResponse.json(barangay)
-//   }
-//   else{
-//     return NextResponse.json(specificBarangay)
-//   }
-// }
+  try{
+      await prisma.barangay.update({
+        data: {
+          name: barangay.name
+        },
+        where: {
+          id: barangay.id
+        }
+  })
+  return NextResponse.json({success: `${barangay.name} has been edited.`})
+
+  }catch(error){
+    return NextResponse.json({error: `An error occured while editing ${barangay.name}`})
+  }
+
+}
+
+export async function POST(request: Request){
+  const name: {name: string} = await request.json()
+
+  try{
+      await prisma.barangay.create({
+        data: {
+          name: name.name
+        }
+  })
+  return NextResponse.json({success: `Barangay ${name.name} has been added. Reload the page to apply the changes.`})
+
+  }catch(error){
+    return NextResponse.json({error: `An error occured while adding barangay ${name.name}`})
+  }
+}

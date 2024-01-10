@@ -1,47 +1,45 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { Session } from "next-auth";
-import { useSession } from "next-auth/react";
-import { useEffect } from "react";
-import { sessionType } from "../../../../../types/session-type";
-import { Barangay } from "@prisma/client";
-import { MoreHorizontal } from "lucide-react";
+import {
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+  Table,
+} from "@/components/ui/table";
+// import { Barangay, User } from "@prisma/client";
+import {
+  ColumnDef,
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+} from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button";
+import DataTablePagination from "../../components/table-pagination";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
+import { MoreHorizontal } from "lucide-react";
+import { Prisma, Role } from "@prisma/client";
+import { useMemo } from "react";
+import EdituserDialog from "./edit-user-dialog";
+import { toast } from "@/components/ui/use-toast";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import DataTablePagination from "../../components/table-pagination";
-import DeleteBarangayDialog from "./delete-barangay-dialog";
-import { useToast } from "@/components/ui/use-toast";
-import EditBarangayDialog from "./edit-barangay-dialog";
-
-export default function BarangayTable() {
-  const rowActions: ColumnDef<Barangay> = {
+export default function UsersTable() {
+  const User: Prisma.UserInclude = {
+    barangay: true,
+  };
+  const rowActions: ColumnDef<typeof User> = {
     id: "actions",
     cell: ({ row }) => {
-      const barangay = row.original;
+      const user = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -52,17 +50,56 @@ export default function BarangayTable() {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DeleteBarangayDialog mutation={mutation} barangay={barangay} />
-            <br />
-            <EditBarangayDialog mutation={mutationEdit} barangay={barangay} />
-            {/* <DropdownMenuItem>Edit</DropdownMenuItem> */}
+            <EdituserDialog mutation={mutation} user={user} />
+            {/* <DropdownMenuItem onClick={() => console.log(users)}>
+              Edit
+            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );
     },
   };
+  const mutation = useMutation({
+    mutationFn: (data: {
+      name: string;
+      email: string;
+      role: Role;
+      barangay: string;
+    }) =>
+      fetch("/api/users", {
+        method: "PUT",
+        body: JSON.stringify(data),
+      }).then((val) => val.json()),
+    onSuccess: (data) => {
+      if (data.success) {
+        query.refetch();
+        toast({
+          title: "Success",
+          description: data.success,
+        });
+      } else if (data.error) {
+        toast({
+          title: "Error",
+          description: data.error,
+        });
+      }
+    },
+    onError: (data) => {
+      toast({
+        title: "Error",
+        description: "An error occured.",
+      });
+    },
+  });
+  const query = useQuery<(typeof User)[]>({
+    queryKey: ["users"],
+    queryFn: () =>
+      fetch("/api/users", {
+        method: "GET",
+      }).then((val) => val.json()),
+  });
 
-  const columns: ColumnDef<Barangay>[] = [
+  const columns: ColumnDef<typeof User>[] = [
     rowActions,
     {
       accessorKey: "id",
@@ -72,76 +109,23 @@ export default function BarangayTable() {
       accessorKey: "name",
       header: "Name",
     },
+    {
+      accessorKey: "email",
+      header: "Email",
+    },
+    {
+      accessorKey: "role",
+      header: "Role",
+    },
+    {
+      accessorKey: "barangayId",
+      header: "Barangay",
+    },
   ];
 
-  const { toast } = useToast();
-  const mutation = useMutation({
-    mutationFn: (data: Barangay) =>
-      fetch("/api/barangay", {
-        method: "DELETE",
-        body: JSON.stringify(data),
-      }).then((val) => val.json()),
-    onSuccess: (data) => {
-      query.refetch();
-      if (data.success) {
-        toast({
-          title: "Success",
-          description: data.success,
-        });
-      } else if (data.error) {
-        toast({
-          title: "Error",
-          description: data.error,
-        });
-      }
-    },
-    onError: (data) => {
-      toast({
-        title: "Error",
-        description: "An error occured.",
-      });
-    },
-  });
-
-  const mutationEdit = useMutation({
-    mutationFn: (data: Barangay) =>
-      fetch("/api/barangay", {
-        method: "PATCH",
-        body: JSON.stringify(data),
-      }).then((val) => val.json()),
-    onSuccess: (data) => {
-      query.refetch();
-      if (data.success) {
-        toast({
-          title: "Success",
-          description: data.success,
-        });
-      } else if (data.error) {
-        toast({
-          title: "Error",
-          description: data.error,
-        });
-      }
-    },
-    onError: (data) => {
-      toast({
-        title: "Error",
-        description: "An error occured.",
-      });
-    },
-  });
-
-  const query = useQuery<Barangay[]>({
-    queryKey: ["barangay"],
-    queryFn: () =>
-      fetch("/api/barangay", { method: "GET" }).then((val) => val.json()),
-  });
-
-  let data: Barangay[] = [];
-
-  if (query.data) {
-    data = query.data;
-  }
+  let data: (typeof User)[] = useMemo(() => {
+    return query.data ? [...query.data] : [];
+  }, [query.data]);
 
   const table = useReactTable({
     columns,
@@ -194,7 +178,7 @@ export default function BarangayTable() {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Fetching barangays...
+                  Fetching users...
                 </TableCell>
               </TableRow>
             ) : (

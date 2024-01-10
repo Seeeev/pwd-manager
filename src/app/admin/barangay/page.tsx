@@ -3,6 +3,7 @@
 import { Separator } from "@/components/ui/separator";
 import StaffForm from "./staff-form";
 import BarangayTable from "./components/brangay-table";
+import AddBarangayDialog from "./components/add-barangay-dialog";
 
 // import { ProfileForm } from "@/app/examples/forms/profile-form";
 
@@ -19,6 +20,7 @@ export default function SettingsProfilePage() {
       <Separator />
       {/* <ProfileForm /> */}
       {/* <StaffForm /> */}
+      <AddBarangayDialog/>
       <BarangayTable/>
     </div>
   );

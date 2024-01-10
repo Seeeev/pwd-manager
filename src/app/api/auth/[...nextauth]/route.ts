@@ -4,8 +4,6 @@ import prisma from "@/prisma";
 import { compareSync } from "bcrypt-ts";
 import NextAuth from "next-auth";
 
-
-
 const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
   callbacks: {
