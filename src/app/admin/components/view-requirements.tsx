@@ -36,7 +36,7 @@ export default function ViewRequirements({ pwdNumber }: ViewRequirementsProps) {
 
   return (
     <Dialog>
-      <DialogTrigger>View sent requirements</DialogTrigger>
+      <DialogTrigger className="text-sm">View sent requirements</DialogTrigger>
       {mutation.isPending && (
         <DialogContent>
           <DialogHeader>

@@ -159,11 +159,10 @@ export default function PwdTable() {
       if (query.data.error) {
         setOpen(true);
       } else {
-        query.data.map((val: any) => console.log(val.status));
         const newData: tableType[] = query.data.map((val: any) => {
           const pwdNumber = val.pwdNumber;
           const name = `${val.lastName}, ${val.firstName} ${val.middleName} ${val.suffix}`;
-          const barangay = val.barangay.name;
+          const barangay = val.barangay ? val.barangay.name : "";
           const status = val.status;
           return {
             barangay: barangay,

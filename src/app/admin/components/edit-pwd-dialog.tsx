@@ -44,13 +44,11 @@ export default function EditPwdDialog({ pwdNumber, query }: EditPwdDialog) {
         }).then((val) => val.json()),
     });
 
-
-
   useEffect(() => mutate({ pwdNumber: pwdNumber }), []);
 
   return (
     <Dialog>
-      <DialogTrigger>Edit</DialogTrigger>
+      <DialogTrigger className="text-sm">Edit</DialogTrigger>
       {isError && (
         <DialogContent>
           <DialogHeader>
