@@ -13,6 +13,13 @@ enum Status {
   rejected
 }
 
+model Announcement {
+  id        Int       @id @default(autoincrement())
+  title     String?
+  body      String?
+  createdAt DateTime? @default(now())
+}
+
 model Pwd {
   pwdNumber                   String            @id
   firstName                   String

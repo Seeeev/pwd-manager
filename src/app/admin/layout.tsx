@@ -113,6 +113,10 @@ const sidebarNavItems = [
     title: "Users",
     href: "/admin/users",
   },
+  {
+    title: "Annoucements",
+    href: "/admin/annoucements",
+  },
 ];
 
 interface SettingsLayoutProps {
