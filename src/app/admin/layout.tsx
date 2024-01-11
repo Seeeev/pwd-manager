@@ -115,7 +115,7 @@ const sidebarNavItems = [
   },
   {
     title: "Annoucements",
-    href: "/admin/annoucements",
+    href: "/admin/announcements",
   },
 ];
 
