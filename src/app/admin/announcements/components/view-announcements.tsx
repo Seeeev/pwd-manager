@@ -1,9 +1,12 @@
 "use client";
 
 import { Announcement } from "@prisma/client";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { useQuery } from "@tanstack/react-query";
+
+import { useMutation, useQuery } from "@tanstack/react-query";
 import AnnoucementCard from "./annoucement-card";
+import { AnyARecord } from "dns";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { toast } from "@/components/ui/use-toast";
 
 export default function ViewAnnoucements() {
   const query = useQuery({
@@ -14,19 +17,51 @@ export default function ViewAnnoucements() {
       }).then((val) => val.json()),
   });
   if (query.data) {
-    console.log(query.data.success);
+    console.log(query.data);
   }
+  const mutation = useMutation({
+    mutationFn: (data: {id: number})=> fetch('/api/announcement',{
+      method: 'DELETE',
+      body: JSON.stringify(data)
+    }).then(val=>val.json()),
+     onSuccess: (data) => {
+      if (data.success) {
+        query.refetch()
+        toast({
+          title: "Success",
+          description: data.success,
+        });
+      } else if (data.error) {
+        toast({
+          title: "Error",
+          description: data.error,
+        });
+      }
+    },
+    onError: (data) => {
+      console.log(data);
+      toast({
+        title: "Error",
+        description: "An error occured.",
+      });
+    },
+  })
+
   return (
-    <ScrollArea>
-      {query.data && query.data.success.length > 0 ? (
-        <AnnoucementCard
-          title={query.data.success.title}
-          body={query.data.success.body}
-          date={query.data.success.date}
-        />
-      ) : (
-        "No announcments"
-      )}
+    <ScrollArea className="h-[500px]">
+      <div className="flex flex-col gap-3">
+        {query.data && query.data.length > 0
+          ? query.data.map((value: any) => (
+              <AnnoucementCard
+                id={value.id}
+                title={value.title}
+                body={value.body}
+                date={value.createdAt}
+                mutation={mutation}
+              />
+            ))
+          : "Fetching announcements..."}
+      </div>
     </ScrollArea>
   );
 }

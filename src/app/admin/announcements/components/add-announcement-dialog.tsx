@@ -33,11 +33,10 @@ import * as z from "zod";
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
-  body: z.string().min(5).max(500),
+  body: z.string().min(5).max(5000),
 });
 
 export default function AddAnnoucementDialog() {
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,15 +47,15 @@ export default function AddAnnoucementDialog() {
 
   const mutation = useMutation({
     mutationFn: (data: z.infer<typeof formSchema>) =>
-      fetch("/api/annoucement", {
+      fetch("/api/announcement", {
         method: "POST",
         body: JSON.stringify(data),
       }).then((val) => val.json()),
     onSuccess: (data) => {
-      if (data.success) {
+      if (data) {
         toast({
           title: "Success",
-          description: data.success,
+          description: "An announcement has been posted",
         });
       } else if (data.error) {
         toast({
@@ -66,6 +65,7 @@ export default function AddAnnoucementDialog() {
       }
     },
     onError: (data) => {
+      console.log(data);
       toast({
         title: "Error",
         description: "An error occured.",
