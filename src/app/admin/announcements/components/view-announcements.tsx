@@ -20,13 +20,14 @@ export default function ViewAnnoucements() {
     console.log(query.data);
   }
   const mutation = useMutation({
-    mutationFn: (data: {id: number})=> fetch('/api/announcement',{
-      method: 'DELETE',
-      body: JSON.stringify(data)
-    }).then(val=>val.json()),
-     onSuccess: (data) => {
+    mutationFn: (data: { id: number }) =>
+      fetch("/api/announcement", {
+        method: "DELETE",
+        body: JSON.stringify(data),
+      }).then((val) => val.json()),
+    onSuccess: (data) => {
       if (data.success) {
-        query.refetch()
+        query.refetch();
         toast({
           title: "Success",
           description: data.success,
@@ -45,7 +46,7 @@ export default function ViewAnnoucements() {
         description: "An error occured.",
       });
     },
-  })
+  });
 
   return (
     <ScrollArea className="h-[500px]">
@@ -58,6 +59,7 @@ export default function ViewAnnoucements() {
                 body={value.body}
                 date={value.createdAt}
                 mutation={mutation}
+                key={value.id}
               />
             ))
           : "Fetching announcements..."}
