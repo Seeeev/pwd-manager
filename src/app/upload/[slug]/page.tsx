@@ -41,10 +41,9 @@ export default function Home({ params }: { params: { slug: string } }) {
         </div>
       </div>
       <div className="flex gap-3 flex-col-reverse mx-10">
-       
-          <div className=" bg-secondary ">
-            <MultiImageDropzoneUsage baseUrl={params.slug} />
-          </div>
+        <div className=" bg-secondary ">
+          <MultiImageDropzoneUsage baseUrl={params.slug} redirect={true} />
+        </div>
 
         <div className="flex flex-col gap-3">
           <Card>
