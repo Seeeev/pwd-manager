@@ -80,10 +80,9 @@ export default function AddPwdDialog() {
             <TabsContent value="info">
               <Card>
                 <CardHeader>
-                  <CardTitle>Account</CardTitle>
+                  <CardTitle>PWD</CardTitle>
                   <CardDescription>
-                    Make changes to your account here. Click save when you're
-                    done.
+                    Create new PWD here. Click submit when you&apos;re done.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-2">
