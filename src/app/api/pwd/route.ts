@@ -82,6 +82,9 @@ export async function GET(){
       barangay:true,
       disabilityCause: true,
       occupation: true
+    },
+    orderBy: {
+      createdAt: "desc"
     }
   })
     console.log(pwd)

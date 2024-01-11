@@ -10,40 +10,6 @@ import {
 import Image from "next/image";
 import prisma from "@/prisma";
 
-// await prisma.pwd.create({
-//   data: {
-//     pwdNumber: "12-1211-121-184991",
-//     firstName: "asdasd",
-//     lastName: "asdasd",
-//     barangay: "asdasd",
-//     municipality: "adsasd",
-//     province: "sdada",
-//     region: "ad",
-//     mobileNumber: "09123233222",
-//     birthDate: new Date("12-12-1211"),
-//     gender: "female",
-//     civilStatus: "separated",
-//     bloodType: "ab+",
-//     isPhilhealthMember: true,
-//     isPhilhealthMemberDependent: false,
-//     accomplishedBy: "091232322",
-//     isApplicant: true,
-//     isGuardian: false,
-//     isRepresentative: false,
-//     disability: {
-//       connect: [{ id: 12 }, { id: 13 }],
-//     },
-//     disabilityCause: {
-//       connect: [{ id: 27 }, { id: 26 }],
-//     },
-//   },
-//   include: {
-//     disability: true,
-//     disabilityCause: true,
-//     occupation: true,
-//   },
-// });
-
 export default function Home() {
   return (
     <>

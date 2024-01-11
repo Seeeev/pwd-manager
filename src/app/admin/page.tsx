@@ -1,6 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 // import ProfileForm from "./components/profile-form";
 import PwdTable from "./components/pwd-table";
+import AddPwdDialog from "./components/add-pwd-dialog";
 
 // import { ProfileForm } from "@/app/examples/forms/profile-form";
 
@@ -14,6 +15,7 @@ export default function SettingsProfilePage() {
         </p>
       </div>
       <Separator />
+      <AddPwdDialog/>
       {/* <ProfileForm /> */}
       <PwdTable />
     </div>

@@ -13,10 +13,12 @@ import { useEffect, useState } from "react";
 
 interface MultiImageDropzoneUsageProps {
   baseUrl: String;
+  redirect: boolean;
 }
 
 export default function MultiImageDropzoneUsage({
   baseUrl,
+  redirect = true,
 }: MultiImageDropzoneUsageProps) {
   const [fileStates, setFileStates] = useState<FileState[]>([]);
   const { edgestore } = useEdgeStore();
@@ -76,11 +78,11 @@ export default function MultiImageDropzoneUsage({
       } else {
         toast({
           title: "Success",
-          description:
-            "Requirements have been uploaded. Redirecting to the main page, please wait...",
+          description: redirect
+            ? "Requirements have been uploaded. Redirecting to the main page, please wait..."
+            : "Requirements have been uploaded. You can now close this dialog.",
         });
-
-        await setTimeout(() => router.push("/"), 2000);
+        redirect && (await setTimeout(() => router.push("/"), 2000));
       }
     },
     onError: () => {

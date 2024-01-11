@@ -58,13 +58,11 @@ model Pwd {
   disability                  Disability[]
   disabilityCause             DisabilityCause[]
   bloodType                   String
-
   barangay     Barangay?   @relation(fields: [barangayId], references: [id])
   barangayId   Int?
   status       Status?     @default(pending)
   occupation   Occupation? @relation(fields: [occupationId], references: [id])
   occupationId Int?
-
   isApparent Boolean?
   imageUrls  ImageUrls[]
 }
@@ -76,28 +74,6 @@ model ImageUrls {
   Pwd          Pwd?    @relation(fields: [pwdPwdNumber], references: [pwdNumber])
   pwdPwdNumber String?
 }
-
-// model ApparentImage {
-//   id                      Int     @id @default(autoincrement())
-//   pathAId1x1              String?
-//   pathAId2x2              String?
-//   pathAWholeBody          String?
-//   pathAMedicalCertificate String?
-//   pathABarangayResidency  String?
-//   pathABirthCertificate   String?
-//   pwd                     Pwd[]
-// }
-
-// model NonApparentImage {
-//   id                     Int     @id @default(autoincrement())
-//   pathNId1x1             String?
-//   pathNId2x2             String?
-//   pathNGovId             String?
-//   pathNBarangayResidency String?
-//   pathNGuardian          String?
-//   pathNRepresentative    String?
-//   pwd                    Pwd[]
-// }
 
 model Barangay {
   id   Int    @id @default(autoincrement())

@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardHeader,
@@ -9,11 +10,12 @@ import {
 import { title } from "process";
 import { Trash2 } from "lucide-react";
 import DeleteAnnouncementDialog from "./delete-announcement-dialog";
+import { useSession } from "next-auth/react";
 interface AnnoucementCardProps {
   title: string;
   body: string;
   date: Date;
-  mutation:any;
+  mutation: any;
   id: number;
 }
 export default function AnnoucementCard({
@@ -33,14 +35,16 @@ export default function AnnoucementCard({
     const formattedDate = new Date(date).toLocaleDateString("en-US", options);
     return formattedDate.replace(/\//g, "-");
   }
-
+  const session = useSession();
 
   return (
     <Card>
       <CardHeader>
         <div className="flex justify-between">
           <CardTitle className="text-primary">{title}</CardTitle>
-          <DeleteAnnouncementDialog id={id} mutation={mutation}/>
+          {session.data?.user.role == "admin" && (
+            <DeleteAnnouncementDialog id={id} mutation={mutation} />
+          )}
         </div>
         {/* <CardDescription>Card Description</CardDescription> */}
       </CardHeader>
