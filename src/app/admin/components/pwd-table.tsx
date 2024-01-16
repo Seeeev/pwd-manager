@@ -105,7 +105,7 @@ export default function PwdTable() {
                     <EditPwdDialog query={query} pwdNumber={pwd.pwdNumber} />
                   </div>
                 )} */}
-              <DropdownMenuItem
+              {/* <DropdownMenuItem
                 disabled={isDisabled}
                 onClick={() =>
                   mutation.mutate({
@@ -115,7 +115,7 @@ export default function PwdTable() {
                 }
               >
                 Approve
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuItem
                 disabled={pwd.status == "pending" || pwd.status == "rejected"}
                 onClick={() =>
