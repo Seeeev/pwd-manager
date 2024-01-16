@@ -98,8 +98,9 @@ export default function PwdTable() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              {session.status == "authenticated" &&
-                session.data?.user.role == "admin" && (
+              {session.status === "authenticated" &&
+                query.data &&
+                session.data?.user?.role === "admin" && (
                   <div className="pl-2">
                     <EditPwdDialog query={query} pwdNumber={pwd.pwdNumber} />
                   </div>
