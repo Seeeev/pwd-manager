@@ -61,12 +61,16 @@ export default function BarangayTable() {
             <br />
             <EditBarangayDialog mutation={mutationEdit} barangay={barangay} />
             {/* <DropdownMenuItem>Edit</DropdownMenuItem> */}
-            <ShowPwdDialog
-              data={
-                query.data! &&
-                query.data.find((brgy) => barangay.id == brgy.id)!.pwd
-              }
-            />
+            <br />
+            <div className="pl-2">
+              <ShowPwdDialog
+                data={
+                  query.data! &&
+                  query.data.find((brgy) => barangay.id == brgy.id)!.pwd
+                }
+              />
+            </div>
+
             {/* <DropdownMenuItem
               onClick={() => {
                 const data = query.data?.find((brgy) => barangay.id == brgy.id);
