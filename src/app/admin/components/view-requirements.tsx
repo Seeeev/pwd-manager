@@ -6,7 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
@@ -34,10 +34,18 @@ export default function ViewRequirements({ pwdNumber }: ViewRequirementsProps) {
     mutation.mutate(pwdNumber);
   }, []);
 
+  const query = useQuery({
+    queryKey: ["requirements"],
+    queryFn: () =>
+      fetch(`api/requirements?id=${pwdNumber}`, { method: "GET" }).then((val) =>
+        val.json()
+      ),
+  });
+
   return (
     <Dialog>
       <DialogTrigger className="text-sm">View sent requirements</DialogTrigger>
-      {mutation.isPending && (
+      {query.isFetching && (
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Loading..</DialogTitle>
@@ -48,27 +56,27 @@ export default function ViewRequirements({ pwdNumber }: ViewRequirementsProps) {
         </DialogContent>
       )}
 
-      {mutation.error && (
+      {query.error && (
         <DialogContent>
           <DialogHeader>
             <DialogTitle>An error occured</DialogTitle>
           </DialogHeader>
         </DialogContent>
       )}
-      {mutation.isSuccess && (
+      {query.isSuccess && (
         <DialogContent>
           <DialogHeader>
             <DialogTitle>PWD Requirements</DialogTitle>
           </DialogHeader>
           <DialogDescription>
-            {mutation.data.imageUrls && mutation.data.imageUrls.length === 0
+            {query.data.imageUrls && query.data.imageUrls.length === 0
               ? "No requirements have been sent"
               : null}
           </DialogDescription>
           <ScrollArea className="max-h-[400px]">
             <div className="flex flex-col gap-3">
-              {mutation.data.imageUrls &&
-                (mutation.data.imageUrls as ImageUrls[]).map((val) => (
+              {query.data.imageUrls &&
+                (query.data.imageUrls as ImageUrls[]).map((val) => (
                   <Image
                     key={val.url}
                     src={val.url}
