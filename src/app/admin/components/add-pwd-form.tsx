@@ -15,7 +15,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { ToastAction } from "@/components/ui/toast";
 import { toast } from "@/components/ui/use-toast";
 import useOptions from "@/lib/get-pwd-options";
@@ -113,7 +117,7 @@ export default function AddForm() {
       isApplicant: false,
       isGuardian: false,
       isRepresentative: false,
-      isApparent: false
+      isApparent: false,
     },
   });
 

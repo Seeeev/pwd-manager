@@ -58,13 +58,13 @@ model Pwd {
   disability                  Disability[]
   disabilityCause             DisabilityCause[]
   bloodType                   String
-  barangay     Barangay?   @relation(fields: [barangayId], references: [id])
-  barangayId   Int?
-  status       Status?     @default(pending)
-  occupation   Occupation? @relation(fields: [occupationId], references: [id])
-  occupationId Int?
-  isApparent Boolean?
-  imageUrls  ImageUrls[]
+  barangay                    Barangay?         @relation(fields: [barangayId], references: [id])
+  barangayId                  Int?
+  status                      Status?           @default(pending)
+  occupation                  Occupation?       @relation(fields: [occupationId], references: [id])
+  occupationId                Int?
+  isApparent                  Boolean?          @default(false)
+  imageUrls                   ImageUrls[]
 }
 
 model ImageUrls {
