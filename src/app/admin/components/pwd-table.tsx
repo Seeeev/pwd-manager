@@ -287,7 +287,7 @@ export default function PwdTable() {
             className="max-w-sm"
           />
         </div>
-        <div className="flex gap-3 py-2">
+        <div className="flex flex-wrap gap-2">
           {session.status == "authenticated" &&
             session.data.user.role == "admin" && (
               <>
