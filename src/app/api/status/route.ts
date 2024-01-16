@@ -1,6 +1,6 @@
 import { Status } from "@prisma/client"
 import { NextResponse } from "next/server"
-
+import prisma from "@/prisma"
 export async function PUT(request: Request){
     
 
