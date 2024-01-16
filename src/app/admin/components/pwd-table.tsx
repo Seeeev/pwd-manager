@@ -116,7 +116,7 @@ export default function PwdTable() {
               >
                 Approve
               </DropdownMenuItem> */}
-              <DropdownMenuItem
+              {/* <DropdownMenuItem
                 disabled={pwd.status == "pending" || pwd.status == "rejected"}
                 onClick={() =>
                   handleGeneratePdf(
@@ -126,7 +126,7 @@ export default function PwdTable() {
                 }
               >
                 Generate Certificate
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() =>
