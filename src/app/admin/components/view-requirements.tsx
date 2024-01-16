@@ -58,25 +58,26 @@ export default function ViewRequirements({ pwdNumber }: ViewRequirementsProps) {
       {mutation.isSuccess && (
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>PWd Requirements</DialogTitle>
+            <DialogTitle>PWD Requirements</DialogTitle>
           </DialogHeader>
           <DialogDescription>
-            {(mutation.data.imageUrls as ImageUrls[]).length == 0
-              ? "No requirements has been sent"
+            {mutation.data.imageUrls && mutation.data.imageUrls.length === 0
+              ? "No requirements have been sent"
               : null}
           </DialogDescription>
           <ScrollArea className="max-h-[400px]">
             <div className="flex flex-col gap-3">
-              {(mutation.data.imageUrls as ImageUrls[]).map((val) => (
-                <Image
-                  key={val.url}
-                  src={val.url}
-                  className="w-auto h-auto"
-                  width={700}
-                  height={400}
-                  alt={val.url}
-                />
-              ))}
+              {mutation.data.imageUrls &&
+                (mutation.data.imageUrls as ImageUrls[]).map((val) => (
+                  <Image
+                    key={val.url}
+                    src={val.url}
+                    className="w-auto h-auto"
+                    width={700}
+                    height={400}
+                    alt={val.url}
+                  />
+                ))}
             </div>
           </ScrollArea>
         </DialogContent>
