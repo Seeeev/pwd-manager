@@ -28,7 +28,7 @@ export default function ShowPwdDialog({ data }: ShowPwdDialogProps) {
           <ScrollArea className="h-[400px]">
             {data.length != 0 ? (
               data.map((pwd, index) => (
-                <p id={pwd.pwdNumber}>
+                <p key={pwd.pwdNumber}>
                   {`${index + 1}. ${pwd.lastName || ""}, ${
                     pwd.firstName || ""
                   } ${pwd.middleName || ""} ${pwd.suffix || ""}`}
