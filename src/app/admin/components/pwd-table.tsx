@@ -128,7 +128,7 @@ export default function PwdTable() {
                 Generate Certificate
               </DropdownMenuItem> */}
               <DropdownMenuSeparator />
-              <DropdownMenuItem
+              {/* <DropdownMenuItem
                 onClick={() =>
                   mutation.mutate({
                     pwdNumber: pwd.pwdNumber,
@@ -137,7 +137,7 @@ export default function PwdTable() {
                 }
               >
                 Reject
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <div className="pl-2">
                 <ViewRequirements pwdNumber={pwd.pwdNumber} />
               </div>
