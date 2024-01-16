@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Barangay } from "@prisma/client";
+import { Barangay, Prisma } from "@prisma/client";
 import { useForm } from "react-hook-form";
 
 import * as z from "zod";

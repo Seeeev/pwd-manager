@@ -5,7 +5,7 @@ import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { sessionType } from "../../../../../types/session-type";
-import { Barangay } from "@prisma/client";
+import { Prisma, Pwd } from "@prisma/client";
 import { MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -36,8 +36,13 @@ import DataTablePagination from "../../components/table-pagination";
 import DeleteBarangayDialog from "./delete-barangay-dialog";
 import { useToast } from "@/components/ui/use-toast";
 import EditBarangayDialog from "./edit-barangay-dialog";
+import ShowPwdDialog from "./show-pwd-dialog";
 
 export default function BarangayTable() {
+  type Barangay = Prisma.BarangayGetPayload<{
+    include: { pwd: true };
+  }>;
+
   const rowActions: ColumnDef<Barangay> = {
     id: "actions",
     cell: ({ row }) => {
@@ -56,6 +61,20 @@ export default function BarangayTable() {
             <br />
             <EditBarangayDialog mutation={mutationEdit} barangay={barangay} />
             {/* <DropdownMenuItem>Edit</DropdownMenuItem> */}
+            <ShowPwdDialog
+              data={
+                query.data! &&
+                query.data.find((brgy) => barangay.id == brgy.id)!.pwd
+              }
+            />
+            {/* <DropdownMenuItem
+              onClick={() => {
+                const data = query.data?.find((brgy) => barangay.id == brgy.id);
+                console.log(data!.pwd);
+              }}
+            >
+              Show PWDs
+            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );

@@ -5,7 +5,11 @@ import { sessionType } from "../../../../types/session-type";
 import { Barangay } from "@prisma/client";
 
 export async function GET() {
-  const res = await prisma.barangay.findMany();
+  const res = await prisma.barangay.findMany({
+    include: {
+      pwd: true
+    }
+  });
 
   return Response.json(res)
 }

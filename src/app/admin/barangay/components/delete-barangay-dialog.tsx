@@ -10,10 +10,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Barangay } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { Label } from "@radix-ui/react-label";
 import { useState } from "react";
 
+type Barangay = Prisma.BarangayGetPayload<{
+  include: { pwd: true };
+}>;
 interface DeleteBarangayDialogProps {
   mutation: any;
   barangay: Barangay;
