@@ -98,14 +98,14 @@ export default function PwdTable() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              {/* {session.status === "authenticated" &&
+              {session.status === "authenticated" &&
                 query.data &&
                 session.data?.user?.role === "admin" && (
                   <div className="pl-2">
                     <EditPwdDialog query={query} pwdNumber={pwd.pwdNumber} />
                   </div>
-                )} */}
-              {/* <DropdownMenuItem
+                )}
+              <DropdownMenuItem
                 disabled={isDisabled}
                 onClick={() =>
                   mutation.mutate({
@@ -115,8 +115,8 @@ export default function PwdTable() {
                 }
               >
                 Approve
-              </DropdownMenuItem> */}
-              {/* <DropdownMenuItem
+              </DropdownMenuItem>
+              <DropdownMenuItem
                 disabled={pwd.status == "pending" || pwd.status == "rejected"}
                 onClick={() =>
                   handleGeneratePdf(
@@ -126,9 +126,9 @@ export default function PwdTable() {
                 }
               >
                 Generate Certificate
-              </DropdownMenuItem> */}
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              {/* <DropdownMenuItem
+              <DropdownMenuItem
                 onClick={() =>
                   mutation.mutate({
                     pwdNumber: pwd.pwdNumber,
@@ -137,7 +137,7 @@ export default function PwdTable() {
                 }
               >
                 Reject
-              </DropdownMenuItem> */}
+              </DropdownMenuItem>
               <div className="pl-2">
                 <ViewRequirements pwdNumber={pwd.pwdNumber} />
               </div>
