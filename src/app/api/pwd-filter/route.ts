@@ -119,4 +119,43 @@ export async function GET(request: Request) {
     console.log('default called: admin')
     return NextResponse.json(data);
   }
+
+  if(role == 'admin' && action == 'pending'){
+    const data = await prisma?.pwd.findMany({
+        where: {
+            status: 'pending'
+        },
+      include: {
+        barangay: true,
+        disability: true,
+        disabilityCause: true,
+        occupation: true,
+      },
+      orderBy: {
+        lastName: "asc",
+      },
+    });
+    console.log('default called: admin')
+    return NextResponse.json(data);
+  }
+
+    if(role == 'barangay' && barangayId && action == 'pending'){
+    const data = await prisma?.pwd.findMany({
+        where: {
+            status: 'pending',
+            barangayId: parseInt(barangayId),
+        },
+      include: {
+        barangay: true,
+        disability: true,
+        disabilityCause: true,
+        occupation: true,
+      },
+      orderBy: {
+        lastName: "asc",
+      },
+    });
+    console.log('default called: admin')
+    return NextResponse.json(data);
+  }
 }

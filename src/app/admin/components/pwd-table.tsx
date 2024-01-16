@@ -176,8 +176,8 @@ export default function PwdTable() {
   //       method: "GET",
   //     }).then((val) => val.json()),
   // });
-  type ACTION = "approved" | "apparent" | "nonApparent" | "default";
-  const [action, setAction] = useState<ACTION>("default");
+  type ACTION = "approved" | "apparent" | "nonApparent" | "default" | "pending";
+  const [action, setAction] = useState<ACTION>("pending");
 
   const query = useQuery({
     queryKey: ["approved"],
@@ -320,6 +320,15 @@ export default function PwdTable() {
             }}
           >
             Show Approved Only
+          </Button>
+          <Button
+            className="text-xs rounded-full"
+            onClick={() => {
+              setAction("pending");
+              query.refetch();
+            }}
+          >
+            Show Pending Only
           </Button>
           <Button
             className="text-xs rounded-full"
