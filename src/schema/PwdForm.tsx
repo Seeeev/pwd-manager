@@ -109,4 +109,5 @@ export const pwdSchema = z.object({
     .refine((value) => value.some((item) => item), {
       message: "You have to select at least one item.",
     }),
+  isApparent: z.boolean(),
 });

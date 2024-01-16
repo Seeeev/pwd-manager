@@ -33,8 +33,14 @@ import { educationalAttainment } from "@/app/constants/educationalAttainment";
 import { employmentStatus } from "@/app/constants/employmentStatus";
 import CustomCheckbox from "./CustomCheckbox2";
 import { ToastAction } from "./ui/toast";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useState } from "react";
 import useOptions from "@/lib/get-pwd-options";
+import { AlertCircle } from "lucide-react";
 // import { optionsDisability, optionsDisabilityCause, optionsBarangay, optionsOccupation } from "@/lib/get-pwd-options";
 
 export default function ApplicationForm() {
@@ -81,6 +87,7 @@ export default function ApplicationForm() {
       isApplicant: false,
       isGuardian: false,
       isRepresentative: false,
+      isApparent: false,
     },
   });
 
@@ -263,26 +270,51 @@ export default function ApplicationForm() {
             />
           </div>
         </div>
-
-        <FormField
-          control={form.control}
-          name="disability"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                Type of Disability
-                <span className="text-red-500">*</span>
-              </FormLabel>
-              <MultiSelect
-                selected={field.value}
-                options={optionsDisability}
-                {...field}
-                className="sm:w-[510px]"
+        <div className="flex gap-3 ">
+          <div className="flex-1">
+            <FormField
+              control={form.control}
+              name="disability"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Type of Disability
+                    <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <MultiSelect
+                    selected={field.value}
+                    options={optionsDisability}
+                    {...field}
+                    className="sm:w-[510px]"
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="pt-6">
+            <div className="flex gap-2">
+              <CustomCheckbox
+                control={form.control}
+                label={"Apparent Disability"}
+                name="isApparent"
               />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+              <Popover>
+                <PopoverTrigger>
+                  <AlertCircle className=" w-5 text-muted-foreground" />
+                </PopoverTrigger>
+                <PopoverContent className="text-xs">
+                  An <span className="text-primary">apparent</span> disability
+                  is one that is easily noticeable or visible to others. A{" "}
+                  <span className="text-primary">non-apparent</span> disability,
+                  on the other hand, is not immediately visible or obvious to
+                  others.
+                </PopoverContent>
+              </Popover>
+            </div>
+          </div>
+        </div>
+
         <FormField
           control={form.control}
           name="disabilityCause"

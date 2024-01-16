@@ -4,24 +4,44 @@ import { Separator } from "@/components/ui/separator";
 import StaffForm from "./staff-form";
 import BarangayTable from "./components/brangay-table";
 import AddBarangayDialog from "./components/add-barangay-dialog";
+import { useSession } from "next-auth/react";
 
 // import { ProfileForm } from "@/app/examples/forms/profile-form";
 
 export default function SettingsProfilePage() {
+  const session = useSession();
 
-  return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-medium">Barangay</h3>
-        <p className="text-sm text-muted-foreground">
-          List of barangays is listed here.
-        </p>
+  if (session.status == "authenticated" && session.data.user.role == "admin") {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-medium">Barangay</h3>
+          <p className="text-sm text-muted-foreground">
+            List of barangays is listed here.
+          </p>
+        </div>
+        <Separator />
+        {/* <ProfileForm /> */}
+        {/* <StaffForm /> */}
+        <AddBarangayDialog />
+        <BarangayTable />
       </div>
-      <Separator />
-      {/* <ProfileForm /> */}
-      {/* <StaffForm /> */}
-      <AddBarangayDialog/>
-      <BarangayTable/>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-medium">This page is intended for the minicipal staff only</h3>
+          {/* <p className="text-sm text-muted-foreground">
+            List of barangays is listed here.
+          </p> */}
+        </div>
+        <Separator />
+        {/* <ProfileForm /> */}
+        {/* <StaffForm /> */}
+        {/* <AddBarangayDialog />
+        <BarangayTable /> */}
+      </div>
+    );
+  }
 }

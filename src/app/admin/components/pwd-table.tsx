@@ -2,12 +2,15 @@
 import { useEffect, useState } from "react";
 import { $Enums, Pwd, Status } from "@prisma/client";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { Input } from "@/components/ui/input";
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
   getPaginationRowModel,
+  ColumnFiltersState,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 
 import {
@@ -45,6 +48,9 @@ import EditPwdDialog from "./edit-pwd-dialog";
 import { useDialogStore } from "@/zustand-states/states";
 import { useSession } from "next-auth/react";
 import ViewRequirements from "./view-requirements";
+import { handleGeneratePdf } from "../certificate/components/pdf-component";
+import { sessionType } from "../../../../types/session-type";
+import ViewAllDetails from "./view-all-details-dialog";
 
 export default function PwdTable() {
   const session = useSession();
@@ -59,6 +65,7 @@ export default function PwdTable() {
   };
 
   const [isDisabled, setIsDisabled] = useState(false);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const mutation = useMutation({
     mutationFn: (data: { pwdNumber: String; status: Status }) =>
@@ -107,6 +114,14 @@ export default function PwdTable() {
               >
                 Approve
               </DropdownMenuItem>
+              <DropdownMenuItem
+                disabled={pwd.status == "pending" || pwd.status == "rejected"}
+                onClick={() =>
+                  handleGeneratePdf(pwd.pwdNumber.valueOf(), pwd.name.valueOf())
+                }
+              >
+                Generate Certificate
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() =>
@@ -120,6 +135,9 @@ export default function PwdTable() {
               </DropdownMenuItem>
               <div className="pl-2">
                 <ViewRequirements pwdNumber={pwd.pwdNumber} />
+              </div>
+              <div className="pl-2">
+                <ViewAllDetails pwdNumber={pwd.pwdNumber}/>
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -146,12 +164,35 @@ export default function PwdTable() {
 
   const [data, setData] = useState<tableType[]>([]);
 
+  // const query = useQuery({
+  //   queryKey: ["pwd"],
+  //   queryFn: () =>
+  //     fetch("api/pwd", {
+  //       method: "GET",
+  //     }).then((val) => val.json()),
+  // });
+  type ACTION = "approved" | "apparent" | "nonApparent" | "default";
+  const [action, setAction] = useState<ACTION>("default");
+
   const query = useQuery({
-    queryKey: ["pwd"],
-    queryFn: () =>
-      fetch("api/pwd", {
-        method: "GET",
-      }).then((val) => val.json()),
+    queryKey: ["approved"],
+    refetchInterval: 500,
+    queryFn: () => {
+      if (session.status == "authenticated") {
+        const role = session.data.user.role;
+        const barangayId = session.data.user.barangayId;
+        const params = new URLSearchParams();
+        params.append("action", action);
+        params.append("role", role!);
+        params.append("barangayId", barangayId ? barangayId.toString() : "");
+        params.toString();
+        console.log(params.get("action"));
+        return fetch(`api/pwd-filter?${params}`, {
+          method: "GET",
+          
+        }).then((val) => val.json());
+      }
+    },
   });
 
   useEffect(() => {
@@ -159,11 +200,28 @@ export default function PwdTable() {
       if (query.data.error) {
         setOpen(true);
       } else {
+        // .filter((val: any) => {
+        //   if (
+        //     (session.status === "authenticated" &&
+        //       session.data.user.role === "barangay" &&
+        //       session.data.user.barangayId &&
+        //       session.data.user.barangayId.toString() ===
+        //         val.barangay.id.toString()) ||
+        //     (session.status === "authenticated" &&
+        //       session.data.user.role === "admin")
+        //   ) {
+        //     return true;
+        //   }
+        //   return false;
+        // })
         const newData: tableType[] = query.data.map((val: any) => {
           const pwdNumber = val.pwdNumber;
-          const name = `${val.lastName}, ${val.firstName} ${val.middleName} ${val.suffix}`;
+          const name = `${val.lastName}, ${val.firstName} ${
+            val.middleName || ""
+          } ${val.suffix || ""}`;
           const barangay = val.barangay ? val.barangay.name : "";
           const status = val.status;
+
           return {
             barangay: barangay,
             name: name,
@@ -171,17 +229,21 @@ export default function PwdTable() {
             status: status!,
           };
         });
-
         setData(newData);
       }
     }
-  }, [query.data]);
+  }, [query.data, query.isFetched, action]);
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      columnFilters,
+    },
   });
 
   const [externalDialogOpen, setExternalDialogOpen] = useState(false);
@@ -208,6 +270,63 @@ export default function PwdTable() {
         </DialogContent>
       </Dialog>
       <div>
+        {/* search by pwdNumber */}
+        <div className="flex items-center py-4">
+          <Input
+            placeholder="Filter PWD Number..."
+            value={
+              (table.getColumn("pwdNumber")?.getFilterValue() as string) ?? ""
+            }
+            onChange={(event) =>
+              table.getColumn("pwdNumber")?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+        </div>
+        <div className="flex gap-3 py-2">
+          {session.status == "authenticated" &&
+            session.data.user.role == "admin" && (
+              <>
+                <Button
+                  className="text-xs rounded-full"
+                  onClick={() => {
+                    setAction("apparent");
+
+                    query.refetch();
+                  }}
+                >
+                  Show Apparent Only
+                </Button>
+                <Button
+                  className="text-xs rounded-full"
+                  onClick={() => {
+                    setAction("nonApparent");
+                    query.refetch();
+                  }}
+                >
+                  Show Non-Apparent Only
+                </Button>
+              </>
+            )}
+          <Button
+            className="text-xs rounded-full"
+            onClick={() => {
+              setAction("approved");
+              query.refetch();
+            }}
+          >
+            Show Approved Only
+          </Button>
+          <Button
+            className="text-xs rounded-full"
+            onClick={() => {
+              setAction("default");
+              query.refetch();
+            }}
+          >
+            Show All
+          </Button>
+        </div>
         <div className="rounded-md border">
           <Table>
             <TableHeader>

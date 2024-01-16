@@ -1,24 +1,34 @@
-'use client';
+"use client";
 import { useSession } from "next-auth/react";
 import UsersTable from "./components/UsersTable";
 import AddUserDialog from "./components/add-user-dialog";
+import { Separator } from "@/components/ui/separator";
 
 export default function Users() {
   const session = useSession();
-  return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-medium">Users</h3>
-        <p className="text-sm text-muted-foreground">Manage users</p>
+
+  if (session.status == "authenticated" && session.data.user.role == "admin") {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-medium">Users</h3>
+          <p className="text-sm text-muted-foreground">Manage users</p>
+        </div>
+        <AddUserDialog />
+        <UsersTable />
       </div>
-      {session.data?.user.role == "admin" ? (
-        <>
-          <AddUserDialog />
-          <UsersTable />
-        </>
-      ) : (
-        "This page is not intended for Barangay users"
-      )}
-    </div>
-  );
+    );
+  }
+  else{
+    return (
+      <div className="space-y-6">
+        <div>
+          <h3 className="text-lg font-medium">
+            This page is intended for the minicipal staff only
+          </h3>
+        </div>
+        <Separator />
+      </div>
+    );
+  }
 }

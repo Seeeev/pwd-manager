@@ -15,8 +15,9 @@ export default function SettingsProfilePage() {
         </p>
       </div>
       <Separator />
-      <AddPwdDialog/>
+      <AddPwdDialog />
       {/* <ProfileForm /> */}
+
       <PwdTable />
     </div>
   );

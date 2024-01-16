@@ -15,6 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ToastAction } from "@/components/ui/toast";
 import { toast } from "@/components/ui/use-toast";
 import useOptions from "@/lib/get-pwd-options";
@@ -22,6 +23,7 @@ import { pwdSchema } from "@/schema/PwdForm";
 import { usePwdNumberStore, useTabStore } from "@/zustand-states/states";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -111,6 +113,7 @@ export default function AddForm() {
       isApplicant: false,
       isGuardian: false,
       isRepresentative: false,
+      isApparent: false
     },
   });
 
@@ -261,6 +264,26 @@ export default function AddForm() {
             </FormItem>
           )}
         />
+        <div className="flex gap-2">
+          <div className="flex-1">
+            <CustomCheckbox
+              control={form.control}
+              label={"Apparent Disability"}
+              name="isApparent"
+            />
+          </div>
+          <Popover>
+            <PopoverTrigger>
+              <AlertCircle className=" w-5 text-muted-foreground" />
+            </PopoverTrigger>
+            <PopoverContent className="text-xs">
+              An <span className="text-primary">apparent</span> disability is
+              one that is easily noticeable or visible to others. A{" "}
+              <span className="text-primary">non-apparent</span> disability, on
+              the other hand, is not immediately visible or obvious to others.
+            </PopoverContent>
+          </Popover>
+        </div>
 
         <FormField
           control={form.control}

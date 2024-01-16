@@ -51,6 +51,7 @@ export default function UsersTable() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <EdituserDialog mutation={mutation} user={user} />
+ 
             {/* <DropdownMenuItem onClick={() => console.log(users)}>
               Edit
             </DropdownMenuItem> */}

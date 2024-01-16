@@ -9,10 +9,13 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 import prisma from "@/prisma";
+import Link from "next/link";
+import NavBar from "@/components/NavBar";
 
 export default function Home() {
   return (
     <>
+      <NavBar/>
       <Card className="mx-1 my-3 sm:mx-10">
         <CardHeader>
           <div className="flex flex-col lg:flex-row justify-between">

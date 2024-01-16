@@ -28,6 +28,8 @@ import CustomCheckbox from "@/components/CustomCheckbox2";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { AlertCircle } from "lucide-react";
 
 interface EditFormProps {
   data: PWD;
@@ -90,6 +92,7 @@ export default function EditForm({ data, query }: EditFormProps) {
       sssNumber: data.sssNumber,
       streetName: data.streetName,
       suffix: data.suffix,
+      isApparent: data.isApparent!
     },
   });
 
@@ -214,6 +217,27 @@ export default function EditForm({ data, query }: EditFormProps) {
             </FormItem>
           )}
         />
+
+        <div className="flex gap-2">
+          <div className="flex-1">
+            <CustomCheckbox
+              control={form.control}
+              label={"Apparent Disability"}
+              name="isApparent"
+            />
+          </div>
+          <Popover>
+            <PopoverTrigger>
+              <AlertCircle className=" w-5 text-muted-foreground" />
+            </PopoverTrigger>
+            <PopoverContent className="text-xs">
+              An <span className="text-primary">apparent</span> disability is
+              one that is easily noticeable or visible to others. A{" "}
+              <span className="text-primary">non-apparent</span> disability, on
+              the other hand, is not immediately visible or obvious to others.
+            </PopoverContent>
+          </Popover>
+        </div>
 
         <FormField
           control={form.control}

@@ -87,7 +87,6 @@ export async function GET(){
       createdAt: "desc"
     }
   })
-    console.log(pwd)
   return NextResponse.json(pwd);
   }catch(error){
     console.log(error)
