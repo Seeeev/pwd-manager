@@ -98,11 +98,12 @@ export default function PwdTable() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              {session.data?.user.role == "admin" && (
-                <div className="pl-2">
-                  <EditPwdDialog query={query} pwdNumber={pwd.pwdNumber} />
-                </div>
-              )}
+              {session.status == "authenticated" &&
+                session.data?.user.role == "admin" && (
+                  <div className="pl-2">
+                    <EditPwdDialog query={query} pwdNumber={pwd.pwdNumber} />
+                  </div>
+                )}
               <DropdownMenuItem
                 disabled={isDisabled}
                 onClick={() =>
@@ -137,7 +138,7 @@ export default function PwdTable() {
                 <ViewRequirements pwdNumber={pwd.pwdNumber} />
               </div>
               <div className="pl-2">
-                <ViewAllDetails pwdNumber={pwd.pwdNumber}/>
+                <ViewAllDetails pwdNumber={pwd.pwdNumber} />
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -189,7 +190,6 @@ export default function PwdTable() {
         console.log(params.get("action"));
         return fetch(`api/pwd-filter?${params}`, {
           method: "GET",
-          
         }).then((val) => val.json());
       }
     },

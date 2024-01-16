@@ -1,19 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/prisma";
 
-// export async function POST(request: Request){
-//     console.log('asdasd')
-//     const res = await request.json()
-
-//     if(res.role == 'admin'){
-//         console.log('admin')
-//     }
-//     else{
-//         console.log('barangay')
-//     }
-//     return NextResponse.json({})
-// }
-
 export async function GET(request: Request) {
     console.log('GET called')
   const { searchParams } = new URL(request.url);
