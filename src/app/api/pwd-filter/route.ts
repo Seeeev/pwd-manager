@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import prisma from "@/prisma";
 
 // export async function POST(request: Request){
 //     console.log('asdasd')
@@ -22,7 +23,7 @@ export async function GET(request: Request) {
   const action = searchParams.get("action");
 
   if (role == "admin" && action == "apparent") {
-    const data = await prisma?.pwd.findMany({
+    const data = await prisma.pwd.findMany({
       where: {
         isApparent: true,
       },
