@@ -138,9 +138,9 @@ export default function PwdTable() {
               >
                 Reject
               </DropdownMenuItem> */}
-              {/* <div className="pl-2">
+              <div className="pl-2">
                 <ViewRequirements pwdNumber={pwd.pwdNumber} />
-              </div> */}
+              </div>
               <div className="pl-2">
                 <ViewAllDetails pwdNumber={pwd.pwdNumber} />
               </div>
