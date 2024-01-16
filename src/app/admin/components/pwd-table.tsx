@@ -119,7 +119,10 @@ export default function PwdTable() {
               <DropdownMenuItem
                 disabled={pwd.status == "pending" || pwd.status == "rejected"}
                 onClick={() =>
-                  handleGeneratePdf(pwd.pwdNumber.valueOf(), pwd.name.valueOf())
+                  handleGeneratePdf(
+                    pwd.pwdNumber?.valueOf(),
+                    pwd.name?.valueOf()
+                  )
                 }
               >
                 Generate Certificate
