@@ -5,7 +5,7 @@ export async function GET(request: Request){
 const { searchParams } = new URL(request.url);
 const pwdNumber = searchParams.get('id')
   try {
-  const pwd = await prisma.pwd.findMany({
+  const pwd = await prisma.pwd.findUnique({
     where: {
         pwdNumber: pwdNumber!
     },
@@ -15,9 +15,9 @@ const pwdNumber = searchParams.get('id')
       disabilityCause: true,
       occupation: true
     },
-    orderBy: {
-      createdAt: "desc"
-    }
+    // orderBy: {
+    //   createdAt: "desc"
+    // }
   })
   return NextResponse.json(pwd);
   }catch(error){
