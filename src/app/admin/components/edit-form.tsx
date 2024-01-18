@@ -28,7 +28,11 @@ import CustomCheckbox from "@/components/CustomCheckbox2";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { AlertCircle } from "lucide-react";
 
 interface EditFormProps {
@@ -92,7 +96,7 @@ export default function EditForm({ data, query }: EditFormProps) {
       sssNumber: data.sssNumber,
       streetName: data.streetName,
       suffix: data.suffix,
-      isApparent: data.isApparent!
+      isApparent: data.isApparent!,
     },
   });
 
@@ -394,7 +398,11 @@ export default function EditForm({ data, query }: EditFormProps) {
           label="Middle Name"
         />
 
-        <CustomFormField control={form.control} name="accomplishedBy" />
+        <CustomFormField
+          control={form.control}
+          name="accomplishedBy"
+          label="Accomplished by"
+        />
         <CustomCheckbox
           control={form.control}
           label={"Applicant"}
