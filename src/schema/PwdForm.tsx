@@ -26,7 +26,7 @@ const dateValidationFormat = () =>
   });
 
 // PWD ID format
-const customIdFormat = () =>
+export const customIdFormat = () =>
   z.string().refine(
     (value) => {
       const regex = /^(\d{2})-(\d{2})(\d{2})-(\d{3})-(\d{6})$/;
