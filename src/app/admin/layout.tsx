@@ -140,7 +140,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
         <div className="flex w-screen h-screen justify-center items-center">
           <div className="flex flex-col items-center">
             <p>Access Denied</p>
-            <Link href="api/auth/signin" className="text-primary">
+            <Link href="/api/auth/signin" className="text-primary">
               Sign In
             </Link>
           </div>
