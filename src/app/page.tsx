@@ -196,13 +196,13 @@ export default function Home() {
               PWD Act 1995
             </h1>
             <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
-              Defines a "person with disability" as someone who has physical,
-              mental, intellectual or sensory impairments which, in interaction
-              with barriers, hinders their full and effective participation in
-              society on an equal basis with others. The act covers a wide range
-              of disabilities, including blindness, hearing impairments,
-              locomotor disability, mental illness, and intellectual disability,
-              among others.
+              Defines a <q>person with disability</q> as someone who has
+              physical, mental, intellectual or sensory impairments which, in
+              interaction with barriers, hinders their full and effective
+              participation in society on an equal basis with others. The act
+              covers a wide range of disabilities, including bligit ndness, hearing
+              impairments, locomotor disability, mental illness, and
+              intellectual disability, among others.
             </p>
             <div className="space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
               <Link href={"/admin"}>
