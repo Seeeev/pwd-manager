@@ -127,7 +127,7 @@ interface SettingsLayoutProps {
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   const { data: session, status } = useSession();
   const router = useRouter();
-  console.log(status)
+  console.log(status);
 
   if (status === "loading") {
     return (
@@ -179,26 +179,28 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
     </div>
   );
 
-  return (
-    <>
-      <div className=" space-y-6 p-10 pb-16 ">
-        <div className="flex justify-between">
-          <div className="space-y-0.5">
-            <h2 className="text-2xl font-bold tracking-tight">Admin Panel</h2>
-            <p className="text-muted-foreground">
-              Manage persons with disability and other data.
-            </p>
+  if (status == "authenticated") {
+    return (
+      <>
+        <div className=" space-y-6 p-10 pb-16 ">
+          <div className="flex justify-between">
+            <div className="space-y-0.5">
+              <h2 className="text-2xl font-bold tracking-tight">Admin Panel</h2>
+              <p className="text-muted-foreground">
+                Manage persons with disability and other data.
+              </p>
+            </div>
+            {logos}
           </div>
-          {logos}
+          <Separator className="my-6" />
+          <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+            <aside className="-mx-4 lg:w-1/5">
+              <SidebarNav items={sidebarNavItems} />
+            </aside>
+            <div className="flex-1 lg:max-w-2xl">{children}</div>
+          </div>
         </div>
-        <Separator className="my-6" />
-        <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <aside className="-mx-4 lg:w-1/5">
-            <SidebarNav items={sidebarNavItems} />
-          </aside>
-          <div className="flex-1 lg:max-w-2xl">{children}</div>
-        </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  }
 }
