@@ -182,6 +182,7 @@ export default function PwdTable() {
   const query = useQuery({
     queryKey: ["approved"],
     refetchInterval: 500,
+    enabled: session.status === "authenticated",
     queryFn: () => {
       if (session.status == "authenticated") {
         const role = session.data.user.role;

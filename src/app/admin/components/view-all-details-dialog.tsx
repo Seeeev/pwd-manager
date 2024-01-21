@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Prisma } from "@prisma/client";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useQuery } from "@tanstack/react-query";
@@ -62,7 +63,7 @@ export default function ViewAllDetails({ pwdNumber }: ViewAllDetailsProps) {
             {JSON.stringify(query.data, null, 2)}
           </code>
         </pre> */}
-        <div className="">
+        {/* <div className="">
           <p>PWD Number: 12-121-1211-111111</p>
           <blockquote className="mt-6 border-l-2 pl-6 italic">
             <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
@@ -75,7 +76,33 @@ export default function ViewAllDetails({ pwdNumber }: ViewAllDetailsProps) {
               </li>
             </ul>
           </blockquote>
-        </div>
+        </div> */}
+
+        <Table>
+          <TableCaption>Details of this PWD</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">PWD NUmber</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Disability</TableHead>
+              <TableHead className="text-right">Blood Type</TableHead>
+              <TableHead className="text-right">Address</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow>
+              <TableCell className="font-medium">
+                {query.data && query.data.pwdNumber}
+              </TableCell>
+              <TableCell>{name}</TableCell>
+              <TableCell>{disability}</TableCell>
+              <TableCell className="text-center">
+                {(query.data && query.data?.bloodType) || ""}
+              </TableCell>
+              <TableCell>{address}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </DialogContent>
     </Dialog>
   );

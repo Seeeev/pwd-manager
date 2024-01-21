@@ -179,8 +179,9 @@ export default function AddForm() {
 
   function onSubmit(values: z.infer<typeof pwdSchema>) {
     setDisabled(true); // disable submit button to prevent multiple requests
-    const newValues = { ...values, status: "approved" };
-    mutation.mutate(newValues);
+    // const newValues = { ...values, status: "approved" };
+    // mutation.mutate(newValues);
+    mutation.mutate(values);
   }
 
   return (
@@ -208,13 +209,13 @@ export default function AddForm() {
           control={form.control}
           name="middleName"
           label="Middle Name"
-          isRequired={true}
+          // isRequired={true}
         />
         <CustomFormField
           control={form.control}
           name="suffix"
           label="Suffix"
-          isRequired={true}
+          // isRequired={true}
         />
         <CustomFormField
           control={form.control}

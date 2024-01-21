@@ -99,6 +99,7 @@ import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Loader } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const sidebarNavItems = [
   {
@@ -125,6 +126,8 @@ interface SettingsLayoutProps {
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   const { data: session, status } = useSession();
+  const router = useRouter();
+  console.log(status)
 
   if (status === "loading") {
     return (
@@ -135,18 +138,19 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
   }
 
   if (status === "unauthenticated") {
-    return (
-      <>
-        <div className="flex w-screen h-screen justify-center items-center">
-          <div className="flex flex-col items-center">
-            <p>Access Denied</p>
-            <Link href="/api/auth/signin" className="text-primary">
-              Sign In
-            </Link>
-          </div>
-        </div>
-      </>
-    );
+    router.push("/api/auth/signin");
+    // return (
+    //   <>
+    //     <div className="flex w-screen h-screen justify-center items-center">
+    //       <div className="flex flex-col items-center">
+    //         <p>Access Denied</p>
+    //         <Link href="/api/auth/signin" className="text-primary">
+    //           Sign In
+    //         </Link>
+    //       </div>
+    //     </div>
+    //   </>
+    // );
   }
 
   const logos = (

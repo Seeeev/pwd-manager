@@ -46,7 +46,7 @@ const generateCertificate = (pwdNumber: string, name: string) => {
   const doc = new jsPDF({
     unit: "in",
     format: [11, 8.5],
-    orientation: "landscape",
+    orientation: "l",
     filters: [],
   });
 
