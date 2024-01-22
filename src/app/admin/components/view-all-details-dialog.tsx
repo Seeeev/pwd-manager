@@ -33,7 +33,6 @@ interface ViewAllDetailsProps {
 }
 
 function formatDate(date: Date): string {
-  
   const day = date.getDate();
   const month = new Intl.DateTimeFormat("en-US", { month: "long" }).format(
     date
@@ -116,13 +115,14 @@ export default function ViewAllDetails({ pwdNumber }: ViewAllDetailsProps) {
         filters: [],
       });
 
-      doc.text(`Full Name: ${fullName}`, 1, 1);
-      doc.text(`Birth Date: ${birthDate}`, 1, 1.3);
-      doc.text(`Gender: ${gender}`, 1, 1.6);
-      doc.text(`Disability: ${disability}`, 1, 1.9);
-      doc.text(`Blood Type: ${bloodType}`, 1, 2.2);
-      doc.text(`Address: ${address}`, 1, 2.5);
-      doc.text(`Contact Number: ${contactNumber}`, 1, 2.8);
+      doc.text(`PWD: Number: ${pwdNumber}`, 1, 1);
+      doc.text(`Full Name: ${fullName}`, 1, 1.3);
+      doc.text(`Birth Date: ${birthDate}`, 1, 1.6);
+      doc.text(`Gender: ${gender}`, 1, 1.9);
+      doc.text(`Disability: ${disability}`, 1, 2.2);
+      doc.text(`Blood Type: ${bloodType}`, 1, 2.5);
+      doc.text(`Address: ${address}`, 1, 2.8);
+      doc.text(`Contact Number: ${contactNumber}`, 1, 3.1);
       doc.save("details.pdf");
     }
   };
