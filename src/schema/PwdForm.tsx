@@ -99,6 +99,9 @@ export const pwdSchema = z.object({
   isApplicant: z.boolean().nullable(),
   isGuardian: z.boolean().nullable(),
   isRepresentative: z.boolean().nullable(),
+  // contactPerson: z.string().min(3).nullable(),
+  // contactPersonRelationship: z.string().min(3).nullable(),
+  // contactPersonNumber: phoneNumberFormat().nullable(),
   disability: z
     .array(z.number())
     .refine((value) => value.some((item) => item), {

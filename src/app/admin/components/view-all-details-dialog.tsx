@@ -1,5 +1,6 @@
 "use client";
 import { bloodTypes } from "@/app/constants/bloodTypes";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,10 +9,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Prisma } from "@prisma/client";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useQuery } from "@tanstack/react-query";
+import jsPDF from "jspdf";
 type PWD = Prisma.PwdGetPayload<{
   include: {
     disability: true;
@@ -20,6 +30,40 @@ type PWD = Prisma.PwdGetPayload<{
 }>;
 interface ViewAllDetailsProps {
   pwdNumber: String;
+}
+
+function formatDate(date: Date): string {
+  
+  const day = date.getDate();
+  const month = new Intl.DateTimeFormat("en-US", { month: "long" }).format(
+    date
+  );
+  const year = date.getFullYear();
+
+  // Add the appropriate suffix to the day
+  const dayWithSuffix: string = addOrdinalSuffix(day);
+
+  // Concatenate the formatted date with the day suffix
+  const finalFormattedDate: string = `${dayWithSuffix} ${month} ${year}`;
+
+  return finalFormattedDate;
+}
+
+function addOrdinalSuffix(num: number): string {
+  if (num >= 11 && num <= 13) {
+    return `${num}th`;
+  }
+  const lastDigit: number = num % 10;
+  switch (lastDigit) {
+    case 1:
+      return `${num}st`;
+    case 2:
+      return `${num}nd`;
+    case 3:
+      return `${num}rd`;
+    default:
+      return `${num}th`;
+  }
 }
 
 export default function ViewAllDetails({ pwdNumber }: ViewAllDetailsProps) {
@@ -34,11 +78,18 @@ export default function ViewAllDetails({ pwdNumber }: ViewAllDetailsProps) {
   let name = "";
   let disability = "";
   let address = "";
+  let birthDate = "";
+
+  const gender = (query.data && query.data.gender) || "";
+  const bloodType = (query.data && query.data?.bloodType) || "";
+  const mobileNumber = (query.data && query.data?.mobileNumber) || "";
 
   if (query.data) {
     name = `${query.data?.lastName || ""}, ${query.data?.firstName || ""} ${
       query.data?.middleName || ""
     } ${query.data?.suffix || ""}`;
+
+    birthDate = formatDate(new Date(query.data.birthDate));
 
     disability = `${query.data?.disability
       .map((item) => item.name)
@@ -48,6 +99,33 @@ export default function ViewAllDetails({ pwdNumber }: ViewAllDetailsProps) {
     }, Tinambac, Camarines Sur`;
   }
 
+  const handleClick = (
+    pwdNumber: String,
+    fullName: string,
+    birthDate: string,
+    gender: string,
+    disability: string,
+    bloodType: string,
+    contactNumber: string
+  ) => {
+    if (query.data) {
+      const doc = new jsPDF({
+        unit: "in",
+        format: [11, 8.5],
+        orientation: "p",
+        filters: [],
+      });
+
+      doc.text(`Full Name: ${fullName}`, 1, 1);
+      doc.text(`Birth Date: ${birthDate}`, 1, 1.3);
+      doc.text(`Gender: ${gender}`, 1, 1.6);
+      doc.text(`Disability: ${disability}`, 1, 1.9);
+      doc.text(`Blood Type: ${bloodType}`, 1, 2.2);
+      doc.text(`Address: ${address}`, 1, 2.5);
+      doc.text(`Contact Number: ${contactNumber}`, 1, 2.8);
+      doc.save("details.pdf");
+    }
+  };
   return (
     <Dialog>
       <DialogTrigger className="text-sm">View All Details</DialogTrigger>
@@ -63,22 +141,37 @@ export default function ViewAllDetails({ pwdNumber }: ViewAllDetailsProps) {
             {JSON.stringify(query.data, null, 2)}
           </code>
         </pre> */}
-        {/* <div className="">
-          <p>PWD Number: 12-121-1211-111111</p>
+        <div className="">
+          <p>PWD Number: {pwdNumber}</p>
           <blockquote className="mt-6 border-l-2 pl-6 italic">
             <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
               <li>Name: {name}</li>
+              <li>Birthdate: {birthDate}</li>
+              <li>Gender: {gender}</li>
               <li>Disability: {disability}</li>
-              <li>Blood Type: {(query.data && query.data?.bloodType) || ""}</li>
+              <li>Blood Type: {bloodType}</li>
               <li>Address: {address}</li>
-              <li>
-                Mobile Number: {(query.data && query.data?.mobileNumber) || ""}
-              </li>
+              <li>Mobile Number: {mobileNumber}</li>
             </ul>
           </blockquote>
-        </div> */}
+        </div>
+        <Button
+          onClick={() =>
+            handleClick(
+              pwdNumber,
+              name,
+              birthDate,
+              gender,
+              disability,
+              bloodType,
+              mobileNumber
+            )
+          }
+        >
+          Print
+        </Button>
 
-        <Table>
+        {/* <Table>
           <TableCaption>Details of this PWD</TableCaption>
           <TableHeader>
             <TableRow>
@@ -102,7 +195,7 @@ export default function ViewAllDetails({ pwdNumber }: ViewAllDetailsProps) {
               <TableCell>{address}</TableCell>
             </TableRow>
           </TableBody>
-        </Table>
+        </Table> */}
       </DialogContent>
     </Dialog>
   );
