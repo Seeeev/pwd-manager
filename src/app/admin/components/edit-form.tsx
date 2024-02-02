@@ -141,7 +141,7 @@ export default function EditForm({ data, query }: EditFormProps) {
         <CustomFormField
           control={form.control}
           name="pwdNumber"
-          label="PWD Number"
+          label="Applicant Number"
           isReadOnly={true}
           isRequired={true}
         />

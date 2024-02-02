@@ -105,17 +105,23 @@ export default function PwdTable() {
                     <EditPwdDialog query={query} pwdNumber={pwd.pwdNumber} />
                   </div>
                 )}
-              <DropdownMenuItem
-                disabled={isDisabled}
-                onClick={() =>
-                  mutation.mutate({
-                    pwdNumber: pwd.pwdNumber,
-                    status: "approved",
-                  })
-                }
-              >
-                Approve
-              </DropdownMenuItem>
+              {/* Dont show approve button to barangay */}
+              {session.status == "authenticated" &&
+                session.data &&
+                session.data.user.role == "admin" && (
+                  <DropdownMenuItem
+                    disabled={isDisabled}
+                    onClick={() =>
+                      mutation.mutate({
+                        pwdNumber: pwd.pwdNumber,
+                        status: "approved",
+                      })
+                    }
+                  >
+                    Approve
+                  </DropdownMenuItem>
+                )}
+
               <DropdownMenuItem
                 disabled={pwd.status == "pending" || pwd.status == "rejected"}
                 onClick={() =>
@@ -128,16 +134,22 @@ export default function PwdTable() {
                 Generate Certificate
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() =>
-                  mutation.mutate({
-                    pwdNumber: pwd.pwdNumber,
-                    status: "rejected",
-                  })
-                }
-              >
-                Reject
-              </DropdownMenuItem>
+
+              {session.status == "authenticated" &&
+                session.data &&
+                session.data.user.role == "admin" && (
+                  <DropdownMenuItem
+                    onClick={() =>
+                      mutation.mutate({
+                        pwdNumber: pwd.pwdNumber,
+                        status: "rejected",
+                      })
+                    }
+                  >
+                    Reject
+                  </DropdownMenuItem>
+                )}
+
               <div className="pl-2">
                 <ViewRequirements pwdNumber={pwd.pwdNumber} />
               </div>
@@ -288,7 +300,7 @@ export default function PwdTable() {
             className="max-w-sm"
           />
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 pb-3">
           {session.status == "authenticated" &&
             session.data.user.role == "admin" && (
               <>
@@ -313,7 +325,7 @@ export default function PwdTable() {
                 </Button>
               </>
             )}
-          <Button
+          {/* <Button
             className="text-xs rounded-full"
             onClick={() => {
               setAction("approved");
@@ -321,7 +333,7 @@ export default function PwdTable() {
             }}
           >
             Show Approved Only
-          </Button>
+          </Button> */}
           <Button
             className="text-xs rounded-full"
             onClick={() => {

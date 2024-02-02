@@ -92,9 +92,9 @@ export default function Home() {
               </span>
             </a>
             <div className="flex items-center lg:order-2">
-              <Link href={"/admin"}>
+              {/* <Link href={"/admin"}>
                 <Button className="w-24 tracking-wide">Login</Button>
-              </Link>
+              </Link> */}
 
               <button
                 data-collapse-toggle="mobile-menu-2"
@@ -220,7 +220,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="bg-white dark:bg-gray-900">
+      {/* <section className="bg-white dark:bg-gray-900">
         <div className="max-w-screen-xl px-4 pb-8 mx-auto lg:pb-16">
           <div className="grid grid-cols-2 gap-8 text-gray-500 sm:gap-12 sm:grid-cols-3 lg:grid-cols-6 dark:text-gray-400">
             <a href="#" className="flex items-center lg:justify-center">
@@ -432,10 +432,10 @@ export default function Home() {
             </a>
           </div>
         </div>
-      </section>
+      </section> */}
       <footer className="bg-white dark:bg-gray-800">
         <div className="max-w-screen-xl p-4 py-6 mx-auto lg:py-16 md:p-8 lg:p-10">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
+          {/* <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
             <div>
               <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">
                 Company
@@ -566,7 +566,7 @@ export default function Home() {
                 </li>
               </ul>
             </div>
-          </div>
+          </div> */}
           {/* <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8"> */}
           <div className="text-center">
             {/* <a

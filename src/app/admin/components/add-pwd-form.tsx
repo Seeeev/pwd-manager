@@ -135,7 +135,9 @@ export default function AddForm() {
       const res = await data.json();
       console.log(res);
       if (res.error) {
-        form.setError("pwdNumber", { message: "PWD number already exists." });
+        form.setError("pwdNumber", {
+          message: "Applicant number already exists.",
+        });
         toast({
           title: "Error",
           description: res.error,
@@ -190,7 +192,7 @@ export default function AddForm() {
         <CustomFormField
           control={form.control}
           name="pwdNumber"
-          label="PWD Number"
+          label="Applicant Number"
           isRequired={true}
         />
         <CustomFormField
