@@ -37,3 +37,12 @@ export const useDialogStore = create<DialogState>()((set)=>({
   pwdNumber: null,
   setPwdNumber: (by)=> set((state)=>({pwdNumber: by}))
  }))
+
+ interface ModalState{
+  isOpen: boolean,
+  setIsOpen: (by: boolean) => void
+ }
+ export const useModalState = create<ModalState>()((set)=> ({
+  isOpen: false,
+  setIsOpen: (by)=> set((state)=>({isOpen: by}))
+ }))

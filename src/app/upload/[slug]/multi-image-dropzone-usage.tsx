@@ -6,6 +6,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { useEdgeStore } from "@/lib/edgestore";
+import { useModalState } from "@/zustand-states/states";
 import { useMutation } from "@tanstack/react-query";
 import { url } from "inspector";
 import { useRouter } from "next/navigation";
@@ -25,6 +26,7 @@ export default function MultiImageDropzoneUsage({
   const [urls, setUrls] = useState<String[]>([]);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const setDialogStaet = useModalState((state) => state.setIsOpen);
 
   function updateFileProgress(key: string, progress: FileState["progress"]) {
     setFileStates((prevFileStates) =>
@@ -80,9 +82,10 @@ export default function MultiImageDropzoneUsage({
           title: "Success",
           description: redirect
             ? "Requirements have been uploaded. Redirecting to the main page, please wait..."
-            : "Requirements have been uploaded. You can now close this dialog.",
+            : "Requirements have been uploaded.",
         });
-        redirect && (await setTimeout(() => router.push("/"), 2000));
+        redirect && setTimeout(() => router.push("/"), 2000);
+        !redirect && setDialogStaet(false);
       }
     },
     onError: () => {

@@ -1,3 +1,4 @@
+"use client";
 // import ApplicationForm from "@/components/ApplicationForm";
 // import {
 //   Card,
@@ -63,6 +64,7 @@
 // }
 
 import { Button } from "@/components/ui/button";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 export default function Home() {
@@ -200,14 +202,17 @@ export default function Home() {
               physical, mental, intellectual or sensory impairments which, in
               interaction with barriers, hinders their full and effective
               participation in society on an equal basis with others. The act
-              covers a wide range of disabilities, including bligit ndness, hearing
-              impairments, locomotor disability, mental illness, and
+              covers a wide range of disabilities, including bligit ndness,
+              hearing impairments, locomotor disability, mental illness, and
               intellectual disability, among others.
             </p>
             <div className="space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-              <Link href={"/admin"}>
-                <Button variant={"outline"}>Login to Admin Panel</Button>
-              </Link>
+              <Button
+                onClick={() => signIn(undefined, { callbackUrl: "/admin" })}
+                variant={"outline"}
+              >
+                Login to Admin Panel
+              </Button>
             </div>
           </div>
           <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">

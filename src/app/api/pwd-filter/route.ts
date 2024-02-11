@@ -135,7 +135,6 @@ export async function GET(request: Request) {
         lastName: "asc",
       },
     });
-    console.log('default called: admin')
     return NextResponse.json(data);
   }
 
@@ -155,7 +154,42 @@ export async function GET(request: Request) {
         lastName: "asc",
       },
     });
-    console.log('default called: admin')
+    return NextResponse.json(data);
+  }
+
+  if(role == "admin" && action == "rejected"){
+    const data = await prisma.pwd.findMany({
+      where:{
+        status: 'rejected',
+      },
+            include: {
+        barangay: true,
+        disability: true,
+        disabilityCause: true,
+        occupation: true,
+      },
+      orderBy: {
+        lastName: "asc",
+      },
+    });
+    return NextResponse.json(data);
+  }
+  if(role == "barangay" && barangayId && action == "rejected"){
+    const data = await prisma?.pwd.findMany({
+        where: {
+            status: 'rejected',
+            barangayId: parseInt(barangayId),
+        },
+      include: {
+        barangay: true,
+        disability: true,
+        disabilityCause: true,
+        occupation: true,
+      },
+      orderBy: {
+        lastName: "asc",
+      },
+    });
     return NextResponse.json(data);
   }
 }

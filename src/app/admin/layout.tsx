@@ -138,6 +138,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
   }
 
   if (status === "unauthenticated") {
+  
     router.push("/api/auth/signin");
     // return (
     //   <>
@@ -155,13 +156,13 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
 
   const logos = (
     <div className="flex gap-3">
-      <Image
+      {/* <Image
         className="w-auto h-auto"
         src={"/img/ph_flag.png"}
         width={80}
         height={80}
         alt="ph"
-      />
+      /> */}
       <Image
         className="w-auto h-auto rounded-full"
         src={"/img/disability.png"}

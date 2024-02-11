@@ -115,7 +115,7 @@ export default function ViewAllDetails({ pwdNumber }: ViewAllDetailsProps) {
         filters: [],
       });
 
-      doc.text(`PWD: Number: ${pwdNumber}`, 1, 1);
+      doc.text(`Applicant Number: ${pwdNumber}`, 1, 1);
       doc.text(`Full Name: ${fullName}`, 1, 1.3);
       doc.text(`Birth Date: ${birthDate}`, 1, 1.6);
       doc.text(`Gender: ${gender}`, 1, 1.9);
@@ -123,7 +123,12 @@ export default function ViewAllDetails({ pwdNumber }: ViewAllDetailsProps) {
       doc.text(`Blood Type: ${bloodType}`, 1, 2.5);
       doc.text(`Address: ${address}`, 1, 2.8);
       doc.text(`Contact Number: ${contactNumber}`, 1, 3.1);
-      doc.save("details.pdf");
+      const pdfData = doc.output("blob");
+      const pdfUrl = URL.createObjectURL(pdfData);
+
+      // Open the PDF in a new window for printing
+      window.open(pdfUrl);
+      // doc.save("details.pdf");
     }
   };
   return (
@@ -142,7 +147,7 @@ export default function ViewAllDetails({ pwdNumber }: ViewAllDetailsProps) {
           </code>
         </pre> */}
         <div className="">
-          <p>PWD Number: {pwdNumber}</p>
+          <p>Applicant Number: {pwdNumber}</p>
           <blockquote className="mt-6 border-l-2 pl-6 italic">
             <ul className="my-6 ml-6 list-disc [&>li]:mt-2">
               <li>Name: {name}</li>

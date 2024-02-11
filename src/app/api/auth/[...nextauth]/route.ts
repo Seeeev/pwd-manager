@@ -5,6 +5,7 @@ import { compareSync } from "bcrypt-ts";
 import NextAuth from "next-auth";
 
 const handler = NextAuth({
+
   adapter: PrismaAdapter(prisma),
   callbacks: {
     session({ session, token }) {
@@ -30,9 +31,12 @@ const handler = NextAuth({
   providers: [
     CredentialsProvider({   
       name: "Credentials",
+    
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+      
+        
       },
       async authorize(credentials, req) {
         if (!credentials?.email || !credentials.password) {
@@ -58,9 +62,10 @@ const handler = NextAuth({
 
       },
     }),
-
-    
   ],
+  // pages: {
+  //   signIn: '/admin', // specify the page to redirect to after sign-in
+  // },
   secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
 });

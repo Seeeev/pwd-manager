@@ -188,7 +188,13 @@ export default function PwdTable() {
   //       method: "GET",
   //     }).then((val) => val.json()),
   // });
-  type ACTION = "approved" | "apparent" | "nonApparent" | "default" | "pending";
+  type ACTION =
+    | "approved"
+    | "apparent"
+    | "nonApparent"
+    | "default"
+    | "pending"
+    | "rejected";
   const [action, setAction] = useState<ACTION>("pending");
 
   const query = useQuery({
@@ -301,30 +307,38 @@ export default function PwdTable() {
           />
         </div>
         <div className="flex flex-wrap gap-2 pb-3">
-          {session.status == "authenticated" &&
-            session.data.user.role == "admin" && (
-              <>
-                <Button
-                  className="text-xs rounded-full"
-                  onClick={() => {
-                    setAction("apparent");
+          {session.status == "authenticated" && (
+            <>
+              <Button
+                className="text-xs rounded-full"
+                onClick={() => {
+                  setAction("apparent");
 
-                    query.refetch();
-                  }}
-                >
-                  Show Apparent Only
-                </Button>
-                <Button
-                  className="text-xs rounded-full"
-                  onClick={() => {
-                    setAction("nonApparent");
-                    query.refetch();
-                  }}
-                >
-                  Show Non-Apparent Only
-                </Button>
-              </>
-            )}
+                  query.refetch();
+                }}
+              >
+                Show Apparent Only
+              </Button>
+              <Button
+                className="text-xs rounded-full"
+                onClick={() => {
+                  setAction("nonApparent");
+                  query.refetch();
+                }}
+              >
+                Show Non-Apparent Only
+              </Button>
+            </>
+          )}
+          <Button
+            className="text-xs rounded-full"
+            onClick={() => {
+              setAction("rejected");
+              query.refetch();
+            }}
+          >
+            Show Rejected Only
+          </Button>
           {/* <Button
             className="text-xs rounded-full"
             onClick={() => {
@@ -343,7 +357,7 @@ export default function PwdTable() {
           >
             Show Pending Only
           </Button>
-          <Button
+          {/* <Button
             className="text-xs rounded-full"
             onClick={() => {
               setAction("default");
@@ -351,7 +365,7 @@ export default function PwdTable() {
             }}
           >
             Show All
-          </Button>
+          </Button> */}
         </div>
         <div className="rounded-md border">
           <Table>

@@ -36,7 +36,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import AddForm from "./add-pwd-form";
-import { usePwdNumberStore, useTabStore } from "@/zustand-states/states";
+import { useModalState, usePwdNumberStore, useTabStore } from "@/zustand-states/states";
 import MultiImageDropzoneUsage from "@/app/upload/[slug]/multi-image-dropzone-usage";
 
 export default function AddPwdDialog() {
@@ -59,8 +59,11 @@ export default function AddPwdDialog() {
     setTab(value);
   };
 
+    const dialogState = useModalState((state) => state.isOpen);
+    const setDialogStaet = useModalState((state) => state.setIsOpen);
+
   return (
-    <Dialog>
+    <Dialog open={dialogState} onOpenChange={setDialogStaet} >
       <DialogTrigger className="text-sm">
         <Button>+ Create new PWD</Button>
       </DialogTrigger>

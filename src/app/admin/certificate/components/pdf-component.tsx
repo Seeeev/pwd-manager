@@ -1,4 +1,3 @@
-import React, { useRef } from "react";
 import { jsPDF } from "jspdf";
 
 function formatDate(date: Date): string {

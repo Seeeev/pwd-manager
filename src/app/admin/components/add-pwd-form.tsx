@@ -24,7 +24,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { toast } from "@/components/ui/use-toast";
 import useOptions from "@/lib/get-pwd-options";
 import { pwdSchema } from "@/schema/PwdForm";
-import { usePwdNumberStore, useTabStore } from "@/zustand-states/states";
+import { useModalState, usePwdNumberStore, useTabStore } from "@/zustand-states/states";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AlertCircle } from "lucide-react";
@@ -36,7 +36,7 @@ export default function AddForm() {
   const [isDisabled, setDisabled] = useState(false);
   const setPwdId = usePwdNumberStore((state) => state.setPwdNumber);
   const setTab = useTabStore((state) => state.setTab); // used to switch tabs between 'info' and 'requirements'
-
+  const setDialogStaet = useModalState((state) => state.setIsOpen);
   const form = useForm<z.infer<typeof pwdSchema>>({
     resolver: zodResolver(pwdSchema),
     mode: "onChange",
@@ -418,33 +418,33 @@ export default function AddForm() {
         <CustomFormField
           control={form.control}
           name="fathersLastName"
-          label="Last Name"
+          label="Father&#39;s Last Name"
         />
         <CustomFormField
           control={form.control}
           name="fathersFirstName"
-          label="First Name"
+          label="Father&#39;s First Name"
         />
         <CustomFormField
           control={form.control}
           name="fathersMiddleName"
-          label="Middle Name"
+          label="Father&#39;s Middle Name"
         />
 
         <CustomFormField
           control={form.control}
           name="mothersLastName"
-          label="Last Name"
+          label="Mother&#39;s Last Name"
         />
         <CustomFormField
           control={form.control}
           name="mothersFirstName"
-          label="First Name"
+          label="Mother&#39;s First Name"
         />
         <CustomFormField
           control={form.control}
           name="mothersMiddleName"
-          label="Middle Name"
+          label="Mother&#39;s Middle Name"
         />
 
         <CustomFormField
