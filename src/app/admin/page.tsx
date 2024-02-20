@@ -29,7 +29,8 @@ export default function SettingsProfilePage() {
               </Button>
             )}
         </div>
-        <PwdCount />
+        {session.status == "authenticated" &&
+          session.data.user.role == "barangay" && <PwdCount />}
       </div>
 
       {/* <ProfileForm /> */}
