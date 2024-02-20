@@ -65,6 +65,7 @@ export default function BarangayTable() {
             <div className="pl-2">
               <ShowPwdDialog
                 data={
+                  
                   query.data! &&
                   query.data.find((brgy) => barangay.id == brgy.id)!.pwd
                 }

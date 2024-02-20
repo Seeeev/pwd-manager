@@ -73,7 +73,7 @@ export default function AddBarangayDialog() {
   }
   return (
     <Dialog>
-      <DialogTrigger className="pl-2 text-sm">
+      <DialogTrigger className=" text-sm">
         <Button>+ Barangay</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

@@ -1,11 +1,15 @@
+"use client";
+
 import { Separator } from "@/components/ui/separator";
-// import ProfileForm from "./components/profile-form";
 import PwdTable from "./components/pwd-table";
 import AddPwdDialog from "./components/add-pwd-dialog";
-
-// import { ProfileForm } from "@/app/examples/forms/profile-form";
-
+import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import PwdCount from "./components/pwd-count";
 export default function SettingsProfilePage() {
+  const session = useSession();
+
   return (
     <div className="space-y-6">
       <div>
@@ -15,7 +19,19 @@ export default function SettingsProfilePage() {
         </p>
       </div>
       <Separator />
-      <AddPwdDialog />
+      <div className="flex justify-between">
+        <div className="flex gap-3 items-center">
+          <AddPwdDialog />
+          {session.status == "authenticated" &&
+            session.data.user.role == "barangay" && (
+              <Button>
+                <Link href={"admin/record"}>PWD Record</Link>
+              </Button>
+            )}
+        </div>
+        <PwdCount />
+      </div>
+
       {/* <ProfileForm /> */}
 
       <PwdTable />

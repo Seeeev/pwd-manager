@@ -81,7 +81,9 @@ export async function GET(){
       disability: true,
       barangay:true,
       disabilityCause: true,
-      occupation: true
+      occupation: true,
+
+
     },
     orderBy: {
       createdAt: "desc"
