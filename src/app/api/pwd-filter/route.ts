@@ -9,6 +9,10 @@ export async function GET(request: Request) {
   const barangayId = searchParams.get("barangayId");
   const action = searchParams.get("action");
 
+  console.log(role)
+  console.log(barangayId)
+  console.log(action)
+
   if (role == "admin" && action == "apparent") {
     const data = await prisma.pwd.findMany({
       where: {
@@ -190,6 +194,47 @@ export async function GET(request: Request) {
         lastName: "asc",
       },
     });
+    return NextResponse.json(data);
+  }
+
+    if (role == "barangay" && barangayId && action == "apparent") {
+    const data = await prisma?.pwd.findMany({
+      where: {
+        barangayId: parseInt(barangayId),
+        isApparent: true,
+        status: 'approved'
+      },
+      include: {
+        barangay: true,
+        disability: true,
+        disabilityCause: true,
+        occupation: true,
+      },
+      orderBy: {
+        lastName: "asc",
+      },
+    });
+    return NextResponse.json(data);
+  }
+
+    if (role == "barangay" && barangayId && action == "nonApparent") {
+    const data = await prisma?.pwd.findMany({
+      where: {
+        barangayId: parseInt(barangayId),
+        isApparent: false,
+        status: 'approved'
+      },
+      include: {
+        barangay: true,
+        disability: true,
+        disabilityCause: true,
+        occupation: true,
+      },
+      orderBy: {
+        lastName: "asc",
+      },
+    });
+    console.log('default called : barangay')
     return NextResponse.json(data);
   }
 }
