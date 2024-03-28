@@ -24,7 +24,11 @@ import { ToastAction } from "@/components/ui/toast";
 import { toast } from "@/components/ui/use-toast";
 import useOptions from "@/lib/get-pwd-options";
 import { pwdSchema } from "@/schema/PwdForm";
-import { useModalState, usePwdNumberStore, useTabStore } from "@/zustand-states/states";
+import {
+  useModalState,
+  usePwdNumberStore,
+  useTabStore,
+} from "@/zustand-states/states";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AlertCircle } from "lucide-react";
@@ -185,6 +189,8 @@ export default function AddForm() {
     // mutation.mutate(newValues);
     mutation.mutate(values);
   }
+
+  console.log(optionsDisability);
 
   return (
     <Form {...form}>
